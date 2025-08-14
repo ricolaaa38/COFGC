@@ -1,0 +1,138 @@
+#cartePage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+}
+
+.filtersAndGestion {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bodyCartePage {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    border: 5px solid black;
+    background-color: black;
+}
+
+
+.mapContainer {
+    flex: 1;
+    width: 80%;
+    height: 100%;
+    margin: 0;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: black;
+}
+
+.selectMapLayer {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    top: 0.5em;
+    right: 0.5em;
+    width: 30px;
+    height: 30px;
+    padding: 10px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    overflow: hidden;
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+.selectMapLayer div {
+    position: relative;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+    transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
+}
+
+.selectMapLayer:hover {
+    width: 170px;
+    height: 190px;
+}
+
+.selectMapLayer:hover div {
+    opacity: 1;
+    max-height: 200px;
+}
+
+.selectMapLayer span {
+    font-weight: bold;
+}
+.selectMapLayer div label {
+    margin-left: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+.selectMapLayer label:hover {
+    cursor: pointer;
+}
+
+.selectMapLayer  .chevronSpan {
+ position: absolute;
+ top: 4px;
+ right: 4px;
+ transition: transform 0.3s ease, top 0.3s ease, right 0.3s ease;
+}
+.selectMapLayer:hover .chevronSpan {
+    top: -2px;
+    right: -2px;
+    transform: rotate(-180deg);
+}
+
+
+.breveSectionContainer {
+    width: 20%;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.olOverviewBottomRight {
+  right: 0.5em;
+  left: auto !important;
+  bottom: 0.5em;
+  top: auto !important;
+  border: 2px solid lightgrey
+}
+
+.olMousePosition {
+  left: 50% ;
+  top: 0.5em;
+   right: auto !important;
+  bottom: auto !important;
+  transform: translateX(-50%);
+  position: absolute !important;
+}
+
+.olFullScreenPosition {
+    left: 0.5em;
+    top: 4em;
+}

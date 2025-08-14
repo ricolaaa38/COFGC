@@ -1,0 +1,407 @@
+.settingsPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(221,221,221);
+}
+
+.settingsContains {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 25px 50px 50px;
+    gap: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.settingsContains h2 {
+    font-size: 30px;
+    font-weight: 800;
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    border-radius: 3px;
+}
+
+.categoriesBtns {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.categoriesBtns button {
+    width: 150px;
+    height: 40px;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+}
+.categoriesBtns button:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.categoriesBtns .active {
+    background-color: blue;
+    border: none;
+    border-radius: 3px;
+}
+
+.filtersList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: lightgrey;
+  border-radius: 3px;
+  padding: 5px;
+  gap: 5px;
+}
+
+/* On retire le point pour les cas particuliers */
+.filtersList li.spacer::before,
+.filtersList li.newFilterForm::before {
+  content: "";
+}
+
+/* Styles de base pour tous les <li> */
+.filtersList li {
+  width: 100%;
+  min-height: 35px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 3px;
+  background-color: white;
+  padding-left: 10px;
+}
+
+.filtersList li:hover {
+  background-color: rgb(238, 251, 255);
+  cursor: pointer;
+}
+
+.filtersList .spacer:hover,
+.filtersList .newFilterForm:hover {
+  background-color: white;
+  cursor: default;
+}
+
+.filtersList .newFilterForm form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+.filtersList .newFilterForm input {
+  width: 20%;
+  height: 90%;
+  border: none;
+  border-radius: 3px;
+  text-align: center;
+}
+.filtersList .newFilterForm button {
+  width: 60px;
+  height: 90%;
+  border: none;
+  border-radius: 3px;
+}
+.filtersList .newFilterForm button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+.filtersList .filterItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 35px;
+  padding: 0 10px;
+  border-radius: 3px;
+  background-color: white;
+}
+.nameWithDot {
+  position: relative;
+  padding-left: 16px;
+}
+.nameWithDot::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 50%;
+    transform: translateY(-50%);
+  color: #444;
+  font-size: 1.2rem;
+  line-height: 35px;
+}
+.updateForm {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 300px;
+  height: 100%;
+}
+.updateForm input {
+  width: 75%;
+  height: 90%;
+  padding: 0 8px;
+  border-radius: 3px;
+  border: none;
+  text-align: center;
+}
+.updateForm button {
+    width: 25%;
+  height: 90%;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+}
+.updateForm button:hover {
+  opacity: 0.85;
+}
+
+.deleteButton {
+    cursor: pointer;
+    width: 30px;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 3px;
+}
+
+.iconsList {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  overflow: auto;
+  background-color: lightgrey;
+  padding: 40px;
+}
+.iconItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  width: 200px;
+  height: 200px;
+  gap: 5px;
+}
+.iconItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+
+/* Animation et css ouverture/fermeture menu bouttons add/update/delete */
+.fabContainer {
+    position: relative;
+    width: auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fabHoverZone {
+  position: relative;
+  display: inline-block;
+}
+
+.fabHoverZone::after {
+  content: "";
+  position: absolute;
+  top: -60px;
+  left: 0px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  z-index: 0;
+}
+.fabContainer .fabMain {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+.fabMain span {
+    transform: scale(1);
+    opacity: 1;
+    transition: opacity 0.2s ease-in, transform 0.4s ease;
+}
+.fabMain.open span {
+    opacity: 0;
+    transform: scale(6) rotate(135deg);
+}
+.fabMain.closing span {
+    transform: scale(1) rotate(0deg);
+}
+.fabContainer .fabMenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    pointer-events: none;
+    z-index: 1;
+}
+.fabMenu .fabItem {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: black;
+  color: white;
+  border: none;
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0.2) translate(0, 0);
+}
+.fabMenu .fabItem:hover{
+  background-color: #ff5e5e;
+}
+.closing .fabItem:nth-child(1) {
+  opacity: 1;
+  transform: scale(1) translate(30px, -50px);
+}
+.closing .fabItem:nth-child(2) {
+  opacity: 1;
+  transform: scale(1) translate(60px, 0px);
+}
+.closing .fabItem:nth-child(3) {
+  opacity: 1;
+  transform: scale(1) translate(30px, 50px);
+}
+
+/* Animation d’apparition */
+.open .fabItem:nth-child(1) {
+  animation: popIn1 0.2s ease forwards;
+  animation-delay: 0.1s;
+}
+.open .fabItem:nth-child(2) {
+  animation: popIn2 0.2s ease forwards;
+  animation-delay: 0.2s;
+}
+.open .fabItem:nth-child(3) {
+  animation: popIn3 0.2s ease forwards;
+  animation-delay: 0.3s;
+}
+
+/* Animation de fermeture */
+.closing .fabItem:nth-child(1) {
+    animation: popOut1 0.2s ease forwards;
+    animation-delay: 0.3s;
+}
+.closing .fabItem:nth-child(2) {
+  animation: popOut2 0.2s ease forwards;
+  animation-delay: 0.2s;
+}
+.closing .fabItem:nth-child(3) {
+  animation: popOut3 0.2s ease forwards;
+  animation-delay: 0.1s;
+}
+
+
+@keyframes popIn1 {
+  0% {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translate(30px, -50px);
+    opacity: 1;
+  }
+}
+@keyframes popIn2 {
+  0% {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translate(60px, 0px);
+    opacity: 1;
+  }
+}
+@keyframes popIn3 {
+  0% {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translate(30px, 50px);
+    opacity: 1;
+  }
+}
+@keyframes popOut1 {
+  from {
+    transform: scale(1) translate(30px, -50px);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+}
+@keyframes popOut2 {
+ from {
+    transform: scale(1) translate(60px, 0px);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+}
+@keyframes popOut3 {
+  from {
+    transform: scale(1) translate(30px, 50px);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+}
+
+
+
+
+/* .filtersList p:nth-child(odd) {
+    background-color: rgb(255, 255, 255);
+}
+
+.filtersList p:nth-child(even) {
+    background-color: rgb(221, 221, 221);
+} */

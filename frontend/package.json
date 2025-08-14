@@ -1,0 +1,31 @@
+{
+  "name": "front-end-bqsm",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "country-list": "^2.3.0",
+    "docx": "^9.5.1",
+    "flatpickr": "^4.6.13",
+    "js-cookie": "^3.0.5",
+    "next": "15.3.2",
+    "ol": "^10.5.0",
+    "react": "^19.0.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^19.0.0",
+    "react-flatpickr": "^4.0.10"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.2",
+    "tailwindcss": "^4"
+  }
+}

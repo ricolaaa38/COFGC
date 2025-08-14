@@ -1,0 +1,91 @@
+.addBreveSection {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 5px;
+  background-color: black;
+}
+.addBreveDiv {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+}
+.addBreveTitle {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.addBreveTitle span {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  color: black;
+}
+.addBreveTitle span:hover {
+  transform: scale(1.2);
+}
+.addBreveDiv form {
+  width: 100%;
+  height: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 10px;
+}
+ .formRow{
+   width: 100%;
+   display: grid;
+   grid-template-columns: 1fr 2fr;
+   align-items: center;
+}
+.formRow label,
+.formRow select,
+.formRow input{
+  width: 100%;
+  height: 25px;
+  border-radius: 3px;
+}
+.formTextarea {
+  width: 100%;
+  height: 40%;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.formTextarea textarea {
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  resize: none;
+}
+
+.addBreveDiv button {
+  width: 100%;
+  height: 40px;
+  border-radius: 3px;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+}

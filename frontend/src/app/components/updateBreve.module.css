@@ -1,0 +1,355 @@
+.updateBreveInfoSection {
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.updateBreveInfoSection form {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.formRow {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+.formRow div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+.formRow div input, .formRow div select {
+    width: 100%;
+}
+
+.formTextArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+}
+
+.formTextArea textarea {
+    width: 100%;
+    height: 150px;
+    resize: none;
+    overflow-y: scroll;
+}
+
+.updateBreveInfoSection form button {
+    width: 100%;
+    height: 25px;
+}
+.updateBreveLinks {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+}
+.updateBreveLinksHeader {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.updateBreveLinksHeader h4 {
+    width: 15%;
+    margin: 0;
+    padding: 0;
+}
+.linkFormCard {
+    width: 85%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+.linkFormCard form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+}
+.linkFormCard form input, .linkFormCard form select {
+    width: 40%;
+    height: 100%;
+}
+.linkFormCard form button {
+  width: 20%;
+}
+
+.updateBreveBodyLink {
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto
+}
+.updateBreveBodyLink a {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: blue;
+}
+
+
+.updateBrevePictures {
+    width: 100%;
+    max-height: 30%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.pictureCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 160px;
+  border: 1px solid black;
+  background-color: black;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.pictureCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+.openAddNewPictureForm span {
+  color: grey;
+  cursor: pointer;
+  font-size: 6em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.openAddNewPictureForm span:hover {
+  color: white;
+  background-color: grey;
+}
+.addNewPictureFormDiv {
+  flex-direction: column;
+  position: relative;
+}
+.addNewPictureFormDiv form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 5px;
+  color: white;
+  gap: 15px;
+}
+
+.closeAddNewPictureFormBtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  background-color: black;
+  cursor: pointer;
+  color: white;
+}
+
+.closeAddNewPictureFormBtn:hover span {
+  transform: scale(1.2);
+}
+.updateBrevePictures .morePictureIcon {
+  position: sticky;
+  bottom: 0;
+  left: 25%;
+  transform: scale(1.2);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5em;
+  z-index: 10;
+  background: none;
+  pointer-events: none;
+  text-shadow: 0 0 6px #000, 0 0 3px #fff;
+}
+
+.updateIntervenants, .updateContributeurs {
+    width: 100%;
+    height: 12%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: auto;
+    gap: 15px;
+    padding-bottom: 10px;
+}
+.intervenantCard, .contributeurCard {
+    background-color: black;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+}
+.closeAddNewIntervenantFormBtn, .closeAddNewContributeurFormBtn {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: none;
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  width: 15px;
+  height: 15px;
+  box-sizing: border-box;
+}
+.closeAddNewIntervenantFormBtn span, .closeAddNewContributeurFormBtn span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.closeAddNewIntervenantFormBtn:hover span, .closeAddNewContributeurFormBtn:hover span {
+  transform: scale(1.2);
+}
+.intervenantCard form, .contributeurCard form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 25px;
+}
+.intervenantCard form select, .contributeurCard form select {
+    width: 100%;
+    height: 25px;
+    border-radius: 3px;
+    border: none;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.intervenantCard form button, .contributeurCard form button {
+    width: 50%;
+    height: 25px;
+    border-radius: 3px;
+    border: none;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.addNewIntervenantIcon span, .addNewContributeurIcon span {
+    color: grey;
+    cursor: pointer;
+    font-size: 4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.addNewIntervenantIcon span:hover, .addNewContributeurIcon span:hover {
+  color: white;
+  background-color: grey;
+}
+.intervenantLogo, .contributeurLogo {
+    overflow: hidden;
+    width: auto;
+    width: 100px;
+    height: 100px;
+    position: relative;
+}
+.intervenantLogo :global(img), .contributeurLogo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.deleteIntervenantBtn, .deleteContributeurBtn, .deletePictureBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.7);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+.deleteIntervenantBtn span, .deleteContributeurBtn span, .deletePictureBtn span {
+  font-size: 2em;
+}
+
+.linkButton {
+  width: auto;
+  height: 100%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: blue;
+}
+.linkButton:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+

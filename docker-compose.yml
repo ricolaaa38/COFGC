@@ -1,0 +1,87 @@
+services:
+  bqsm-postgres:
+    image: postgres:17
+    restart: always
+    environment:
+      - POSTGRES_DB=bqsm
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - bqsm-network
+
+  bqsm-keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev
+    environment:
+      - KC_HOSTNAME=bqsm-keycloak
+      - KC_HOSTNAME_URL=http://bqsm-keycloak:8080
+      - KC_HTTP_PORT=8080
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_PROXY=edge
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    ports:
+      - "8080:8080"
+    networks:
+      - bqsm-network
+
+  bqsm-backend:
+    image: bqsm-backend:latest
+    build:
+      context: ./bqsm
+    environment:
+      - DB_URL=jdbc:postgresql://bqsm-postgres:5432/bqsm
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - KEYCLOAK_URL=http://bqsm-keycloak:8080
+      - FRONT_URL=http://dev.local:3000
+      - OAUTH2_URL=http://dev.local:4180
+    depends_on:
+      - bqsm-postgres
+      - bqsm-keycloak
+    ports:
+      - "8081:8081"
+    networks:
+      - bqsm-network
+
+  bqsm-oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+    volumes:
+      - ./oauth2-proxy.cfg:/etc/oauth2-proxy.cfg
+    command: ["--config", "/etc/oauth2-proxy.cfg"]
+    depends_on:
+      - bqsm-backend
+      - bqsm-keycloak
+    ports:
+      - "4180:4180"
+    networks:
+      - bqsm-network
+
+  bqsm-frontend:
+    build:
+      context: ./front-end-bqsm
+    environment:
+      - NEXT_PUBLIC_OAUTH2_URL=http://dev.local:4180
+      - NEXT_PUBLIC_KEYCLOAK_URL=http://bqsm-keycloak:8080
+      - NEXT_PUBLIC_FRONT_URL=http://dev.local:3000
+    depends_on:
+      - bqsm-oauth2-proxy
+    ports:
+      - "3000:3000"
+    networks:
+      - bqsm-network
+
+networks:
+  bqsm-network:
+    driver: bridge
+
+volumes:
+  db_data:
+  keycloak_data:

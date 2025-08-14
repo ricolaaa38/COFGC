@@ -1,0 +1,74 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0,0.5);
+}
+
+.addFolderModal {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    width: auto;
+    max-width: 250px;
+    height: auto;
+    border-radius: 3px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+.addFolderModal form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+.labelInputGroup {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+}
+.labelInputGroup input {
+    width: 100%;
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.modalButtons {
+     width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+.confirmButton, .cancelButton {
+    width: 75px;
+    height: 50px;
+    border: none;
+    border-radius: 3px;
+}
+.confirmButton:hover, .cancelButton:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+.confirmButton {
+    background-color: green;
+}
+.cancelButton {
+    background-color: red;
+}

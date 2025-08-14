@@ -1,0 +1,330 @@
+.modalOverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  background-color: black;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow-y: auto;
+  gap: 10px;
+  border-radius: 5px;
+}
+
+.modalNav {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalNav button {
+    color: black;
+    background-color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+}
+
+.modalNav button:hover {
+    cursor: pointer;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    transform: scale(1.1);
+}
+
+.breveCardHeader {
+    position: relative;
+    width: 100%;
+    height: 15%;
+    border-top: 2px solid lightgrey;
+    border-bottom: 2px solid lightgrey;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    padding: 10px 0;
+}
+.breveIcon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.breveIcon span {
+    font-size: 3rem;
+}
+.breveInfo {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5px;
+}
+.breveInfo div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 50px;
+}
+.breveComments {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    background-color: white;
+    width: 45px;
+    height: 45px;
+}
+.breveComments:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+}
+
+.breveCarroussel {
+    width: 100%;
+    height: 25%;
+    padding-bottom: 10px;
+    border-bottom: 2px solid lightgrey;
+}
+.breveCarroussel div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.breveCarroussel p {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.breveCarroussel button {
+    width: 75px;
+    height: 100%;
+    z-index: 11;
+    border: none;
+    border-radius: 8px;
+    background-color: transparent;
+    backdrop-filter: none;
+    transition: backdrop-filter 0.2s ease;
+}
+.previousPictureButton {
+    position: absolute;
+    left: 0;
+}
+.nextPictureButton {
+    position: absolute;
+    right: 0;
+}
+
+.breveCarroussel button:hover {
+    cursor: pointer;
+    backdrop-filter: blur(2px);
+}
+
+.breveCarroussel button span {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+.breveCarroussel button:hover span {
+    transform: scale(1.3);
+}
+
+.breveCarroussel div img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 8px;
+    z-index: 10;
+}
+
+.breveCarroussel .carouselDots {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  z-index: 12;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.activeDot {
+  width: 16px;
+  height: 16px;
+  background: #333;
+  opacity: 1;
+}
+
+.breveBody {
+    width: 100%;
+    height: 25%;
+    padding-bottom: 0px;
+    border-bottom: 2px solid lightgrey;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.breveBody .breveBodyContent {
+    width: 100%;
+    height: 85%;
+    overflow-y: auto;
+    min-height: 0;
+}
+.breveBody .breveBodyLink {
+    width: 100%;
+    height: 15%;
+    color: darkblue;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 5px;
+}
+.breveBodyLink p {
+    color: black;
+}
+.breveBodyLink a {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.breveBodyLink a:hover {
+    color: blue;
+}
+
+.breveIntervenantsBody, .breveContributeursBody {
+    width: 100%;
+    height: 15%;
+    border-bottom: 2px solid lightgrey;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 0 0 10px 0;
+}
+
+.breveIntervenants, .breveContributeurs {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.intervenantLogo, .contributeurLogo {
+    width: 90;
+    height: 90;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    border-radius: 50%;
+    border: 2px solid lightgrey;
+}
+
+.breveIntervenants :global(img), .breveContributeurs :global(img) {
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #eee;
+    background: #fff;
+    display: block;
+}
+
+.updateBreveModalContent {
+    position: absolute;
+    background-color: white;
+    border-radius: 10px;
+    border-left: 5px solid black;
+    z-index: 50;
+    width: 100%;
+    height: 100%;
+}
+
+.updateBreveHeader {
+    width: 100%;
+    height: 5%;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    
+}
+.updateBreveHeader button {
+    border: none;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    background-color: transparent;
+    color: black;
+}
+.updateBreveHeader button:hover {
+    transform: scale(1.2);
+}
+.updateBreveSection {
+    width: 100%;
+    height: 95%;
+}

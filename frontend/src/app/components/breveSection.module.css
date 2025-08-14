@@ -1,0 +1,92 @@
+#breveSection {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+
+}
+.breveSectionNoScroll {
+    overflow: hidden !important;
+}
+
+.breveSectionTitle {
+    width: 100%;
+    height: 12%;
+    padding: 10px;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: black;
+    color: white;
+    z-index: 2;
+    position: sticky;
+    top: 0;
+    position: relative;
+    gap: 5px;
+}
+
+.nombreBreves {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+.breveSectionActions {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.breveSectionTitle span {
+    transform: scale(1.3);
+}
+.breveSectionTitle span:hover {
+    cursor: pointer;
+    transform: scale(1.4);
+}
+
+.activeFiltersList {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    text-align: center;
+    list-style: none;
+}
+.activeFilterItem {
+    height: 100%;
+    padding: 5px;
+    border-right: 1px dashed white;
+}
+.activeFilterItem:last-child {
+    border-right: none;
+}
+
+.filterName {
+    font-size: 14px;
+}
+.filterValue {
+    font-size: 12px;
+}
+.filtresTitle {
+ margin-right: 5px;
+}
+
+.brevesCards {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px 5px 5px;
+    gap: 5px;
+    background-color: black;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #bebdbd rgb(100,100,100);
+}

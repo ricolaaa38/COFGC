@@ -1,0 +1,73 @@
+.divSectionCommentaires {
+    z-index: 1000;
+    position: absolute;
+    top: 50%;
+    left: -100%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 600px;
+    height: 400px;
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+}
+.divCommentaireTitre {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.divCommentaireTitre span {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    cursor: pointer;
+    transform: scale(1.5);
+}
+.divCommentaireTitre span:hover {
+    transform: scale(1.8);
+}
+.divSectionCommentaires form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.divSectionCommentaires form input {
+    width: 100%;
+    height: 10%;
+}
+.divSectionCommentaires form textarea {
+    width: 100%;
+    height: 40%;
+    resize: none;
+}
+.divSectionCommentaires form button {
+    width: 100%;
+    height: 10%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.successMessage {
+    height: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.emptyMessage {
+    height: 20px;
+    color: transparent;
+    font-weight: bold;
+    margin-top: 10px;
+}
