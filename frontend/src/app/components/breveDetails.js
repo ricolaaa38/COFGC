@@ -52,8 +52,6 @@ export default function BreveDetails({
     fetchIcons();
   }, [breve.id, needRefresh]);
 
-  console.log("associatedIcons", associatedIcons);
-
   function nextPic() {
     setCurrent((c) => (c < pictures.length - 1 ? c + 1 : 0));
   }
@@ -92,12 +90,23 @@ export default function BreveDetails({
             </button>
           </div>
           {userRole === "admin" ? (
-            <button
-              title="modifier"
-              onClick={() => setOpenUpdateBreve(!openUpdateBreve)}
-            >
-              <span className="material-symbols-outlined">edit_square</span>
-            </button>
+            <>
+              <button
+                title="modifier"
+                onClick={() => setOpenUpdateBreve(!openUpdateBreve)}
+              >
+                <span className="material-symbols-outlined">edit_square</span>
+              </button>
+              <button
+                title="ajouter un commentaire"
+                onClick={() => {
+                  setOpenCommentaireSection(!openCommentaireSection);
+                  setOpenListCommentaires(false);
+                }}
+              >
+                <span className="material-symbols-outlined">comment</span>
+              </button>
+            </>
           ) : (
             <button
               title="ajouter un commentaire"

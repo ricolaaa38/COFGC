@@ -44,6 +44,14 @@ a {
   'opsz' 24
 }
 
+.redirecting-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
 
 @media (prefers-color-scheme: dark) {
   html {

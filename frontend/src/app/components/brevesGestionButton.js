@@ -13,6 +13,7 @@ export default function BrevesGestionButtons() {
   const [isValidFile, setIsValidFile] = useState(false);
   const fileInputRef = useRef(null);
   const { brevesForExport, userRole, setNeedRefresh } = useData();
+  console.log("userRole:", userRole);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];

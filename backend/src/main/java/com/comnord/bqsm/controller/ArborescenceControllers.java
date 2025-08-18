@@ -4,6 +4,7 @@ import com.comnord.bqsm.exception.DossierArborescenceNotFoundException;
 import com.comnord.bqsm.model.DossierArborescenceEntity;
 import com.comnord.bqsm.model.FichierArborescenceEntity;
 import com.comnord.bqsm.model.dto.DossierDTO;
+import com.comnord.bqsm.model.dto.FichierDTO;
 import com.comnord.bqsm.model.dto.FichierMetaDTO;
 import com.comnord.bqsm.model.dto.FolderChildrenDTO;
 import com.comnord.bqsm.repository.DossierArborescenceRepository;
@@ -130,19 +131,47 @@ public class ArborescenceControllers {
         }
     }
 
-
     @PostMapping("/update-folder")
-    public ResponseEntity<?> updateFolder(@RequestBody DossierArborescenceEntity dossier) {
-        Optional<DossierArborescenceEntity> existingFolder = dossierArborescenceRepository.findById(dossier.getId());
-        Optional<DossierArborescenceEntity> alreadyExistEntry = dossierArborescenceRepository.findDossierByParentIdAndName(dossier.getParentId(), dossier.getName());
-        if (alreadyExistEntry.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Le dossier '" + dossier.getName() + "' existe déjà dans le dossier '" + dossierArborescenceRepository.findById(dossier.getParentId().getId()).get().getName() + "'.");
+    public ResponseEntity<?> updateFolder(
+            @RequestParam Integer id,
+            @RequestParam(required = false) Integer parentId,
+            @RequestParam(required = false) String name
+    ) {
+        Optional<DossierArborescenceEntity> existingFolderOpt = dossierArborescenceRepository.findById(id);
+        if (existingFolderOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Dossier non trouvé avec l'ID: " + id);
         }
-        if (existingFolder.isPresent()) {
-            DossierArborescenceEntity updatedDossier = dossierArborescenceServices.updateDossier(dossier, existingFolder.get());
-            return ResponseEntity.status(HttpStatus.OK).body(updatedDossier);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé avec l'ID: " + dossier.getId());
+        DossierArborescenceEntity existingFolder = existingFolderOpt.get();
+
+        DossierArborescenceEntity parent = null;
+        if (parentId != null) {
+            parent = dossierArborescenceRepository.findById(parentId).orElse(null);
+            if (parent == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Parent introuvable avec l'ID: " + parentId);
+            }
+        }
+        String newName = name != null ? name : existingFolder.getName();
+
+        Optional<DossierArborescenceEntity> alreadyExistEntry =
+                dossierArborescenceRepository.findDossierByParentIdAndName(parent, newName);
+        if (alreadyExistEntry.isPresent() && alreadyExistEntry.get().getId() != id) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Le dossier '" + newName + "' existe déjà à cet endroit.");
+        }
+
+        DossierArborescenceEntity newFolder = new DossierArborescenceEntity();
+        newFolder.setId(id);
+        newFolder.setName(newName);
+        newFolder.setParentId(parent);
+
+        try {
+            DossierArborescenceEntity updatedFolder = dossierArborescenceServices.updateDossier(newFolder, existingFolder);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedFolder);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la mise à jour : " + e.getMessage());
         }
     }
 
@@ -181,18 +210,48 @@ public class ArborescenceControllers {
         }
     }
 
+    // Java
     @PostMapping("/update-file")
-    public ResponseEntity<?> updateFile(@RequestBody FichierArborescenceEntity fichier) {
-        Optional<FichierArborescenceEntity> existingFile = fichierArborescenceRepository.findById(fichier.getId());
-        Optional<FichierArborescenceEntity> alreadyExistEntry = fichierArborescenceRepository.findFileByparentIdAndName(fichier.getParentId(), fichier.getName());
-        if (alreadyExistEntry.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Il existe déjà un fichier nommé '" + fichier.getName() + "' dans le dossier '" + dossierArborescenceRepository.findById(fichier.getParentId().getId()).get().getName() + "'.");
+    public ResponseEntity<?> updateFile(
+            @RequestParam Integer id,
+            @RequestParam(required = false) Integer parentId,
+            @RequestParam(required = false) String name
+    ) {
+        Optional<FichierArborescenceEntity> existingFileOpt = fichierArborescenceRepository.findById(id);
+        if (existingFileOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Fichier non trouvé avec l'ID: " + id);
         }
-        if (existingFile.isPresent()) {
-            FichierArborescenceEntity updatedFichier = fichierArborescenceServices.updateFile(fichier, existingFile.get());
+        FichierArborescenceEntity existingFile = existingFileOpt.get();
+
+        DossierArborescenceEntity parent = null;
+        if (parentId != null) {
+            parent = dossierArborescenceRepository.findById(parentId).orElse(null);
+            if (parent == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Parent introuvable avec l'ID: " + parentId);
+            }
+        }
+        String newName = name != null ? name : existingFile.getName();
+
+        Optional<FichierArborescenceEntity> alreadyExistEntry =
+                fichierArborescenceRepository.findFileByparentIdAndName(parent, name);
+        if (alreadyExistEntry.isPresent() && alreadyExistEntry.get().getId() != id) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Il existe déjà un fichier nommé '" + name + "' dans le dossier.");
+        }
+
+        FichierArborescenceEntity newFile = new FichierArborescenceEntity();
+        newFile.setId(id);
+        newFile.setName(name);
+        newFile.setParentId(parent);
+
+        try {
+            FichierArborescenceEntity updatedFichier = fichierArborescenceServices.updateFile(newFile, existingFile);
             return ResponseEntity.status(HttpStatus.OK).body(updatedFichier);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fichier non trouvé avec l'ID: " + fichier.getId());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la mise à jour : " + e.getMessage());
         }
     }
 

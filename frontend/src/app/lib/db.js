@@ -478,27 +478,22 @@ export async function addNewDossier(dossier) {
   }
 }
 
-export async function updateDossier(dossier) {
+export async function updateDossier({ id, parentId, name }) {
   try {
     const response = await fetch(
-      `${OAUTH2_URL}/api/arborescence/update-folder`,
+      `${OAUTH2_URL}/api/arborescence/update-folder?id=${id}&parentId=${parentId}&name=${name}`,
       {
         method: "POST",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dossier),
       }
     );
-    if (response.ok) {
-      return await response.json();
-    } else {
+    if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(errorText);
+      throw new Error(errorText || `updateDossier failed (${response.status})`);
     }
+    return await response.json();
   } catch (error) {
-    console.error("Erreur lors de la création du dossier: ", error);
+    console.error("Erreur lors de la mise à jour du dossier :", error.message);
     throw error;
   }
 }
@@ -546,24 +541,24 @@ export async function addNewFile(parentId, name, file) {
   }
 }
 
-export async function updateFile(parentId, name, file) {
+export async function updateFile({ id, parentId, name, file }) {
   try {
-    const formData = new FormData();
-    formData.append("parentId", parentId);
-    formData.append("name", name);
-    formData.append("file", file);
-    const response = await fetch(`${OAUTH2_URL}/api/arborescence/update-file`, {
-      method: "POST",
-      credentials: "include",
-      body: formData,
-    });
+    const response = await fetch(
+      `${OAUTH2_URL}/api/arborescence/update-file?id=${id}&parentId=${parentId}&name=${name}`,
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(errorText);
+      throw new Error(
+        errorText || `updateFile (json) failed (${response.status})`
+      );
     }
     return await response.json();
   } catch (error) {
-    console.error("Erreur lors de la création du fichier :", error.message);
+    console.error("Erreur lors de la mise à jour du fichier :", error.message);
     throw error;
   }
 }

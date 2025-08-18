@@ -35,7 +35,7 @@ services:
   bqsm-backend:
     image: bqsm-backend:latest
     build:
-      context: ./bqsm
+      context: ./backend
     environment:
       - DB_URL=jdbc:postgresql://bqsm-postgres:5432/bqsm
       - DB_USERNAME=postgres
@@ -66,8 +66,14 @@ services:
 
   bqsm-frontend:
     build:
-      context: ./front-end-bqsm
+      context: ./frontend
+      dockerfile: Dockerfile
+    command: sh -c "CHOKIDAR_USEPOLLING=true npm run dev"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     environment:
+      - NODE_ENV=development
       - NEXT_PUBLIC_OAUTH2_URL=http://dev.local:4180
       - NEXT_PUBLIC_KEYCLOAK_URL=http://bqsm-keycloak:8080
       - NEXT_PUBLIC_FRONT_URL=http://dev.local:3000

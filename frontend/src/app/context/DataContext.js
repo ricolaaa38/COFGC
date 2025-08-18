@@ -16,7 +16,7 @@ export function DataProvider({ children }) {
   const [hasMore, setHasMore] = useState(true);
   const [activeFilters, setActiveFilters] = useState({});
   const [needRefresh, setNeedRefresh] = useState(false);
-  const [userRole, setUserRole] = useState("admin");
+  const [userRole, setUserRole] = useState("");
   const [brevesForExport, setBrevesForExport] = useState([]);
 
   useEffect(() => {
@@ -69,6 +69,7 @@ export function DataProvider({ children }) {
         activeFilters,
         setActiveFilters,
         userRole,
+        setUserRole,
         needRefresh,
         setNeedRefresh,
         brevesForExport,
