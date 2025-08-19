@@ -76,3 +76,9 @@
     padding: 5px;
     border-radius: 3px;
 }
+
+@media (max-width: 768px) {
+   .brevesGestionButtonSection {
+    display: none;
+}
+}

@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <main id={styles.main}>
+    <main id="main" className={styles.main}>
       <Header />
       <div className={styles.imageContainer}>
         <Image

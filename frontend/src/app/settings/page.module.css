@@ -212,6 +212,28 @@
   object-fit: cover;
   border-radius: 3px;
 }
+.iconsList .newIconForm {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background-color: black;
+  color: white;
+  border-radius: 3px;
+  padding: 8px;
+  min-width: 200px;
+  max-width: 200px;
+  width: 100%;
+  height: 200px;
+}
+
+.iconsList .newIconForm input,
+.iconsList .newIconForm button {
+  width: 100%;
+  box-sizing: border-box;
+}
 
 
 /* Animation et css ouverture/fermeture menu bouttons add/update/delete */
@@ -395,9 +417,6 @@
   }
 }
 
-
-
-
 /* .filtersList p:nth-child(odd) {
     background-color: rgb(255, 255, 255);
 }
@@ -405,3 +424,211 @@
 .filtersList p:nth-child(even) {
     background-color: rgb(221, 221, 221);
 } */
+
+@media (max-width: 768px) {
+  .settingsContains {
+    padding: 10px 10px 10px;
+    gap: 10px;
+}
+.categoriesBtns {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+.categoriesBtns button {
+    width: 100%;
+    height: 35px;
+    padding: 5px;
+    border: none;
+    border-radius: 3px;
+}
+.categoriesBtns button:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.categoriesBtns .active {
+    background-color: blue;
+    border: none;
+    border-radius: 3px;
+}
+.fabContainer .fabMain {
+    width: 40px;
+    height: 40px;
+}
+ .categoriesBtns > .fabContainer {
+    grid-column: 1 / -1;
+    justify-self: center;
+    order: 99;
+    flex: none;            
+    padding-top: 8px;
+  }
+  .closing .fabItem:nth-child(1) {
+    opacity: 1;
+    transform: scale(1) translate(45px, 20px);
+}
+  .closing .fabItem:nth-child(2) {
+    opacity: 1;
+    transform: scale(1) translate(0px, 50px);
+}
+  .closing .fabItem:nth-child(3) {
+    opacity: 1;
+    transform: scale(1) translate(-45px, 20px);
+}
+/* Animation d’apparition */
+.open .fabItem:nth-child(1) {
+  animation: popDownIn1 0.2s ease forwards;
+  animation-delay: 0.1s;
+}
+.open .fabItem:nth-child(2) {
+  animation: popDownIn2 0.2s ease forwards;
+  animation-delay: 0.2s;
+}
+.open .fabItem:nth-child(3) {
+  animation: popDownIn3 0.2s ease forwards;
+  animation-delay: 0.3s;
+}
+
+/* Animation de fermeture */
+.closing .fabItem:nth-child(1) {
+    animation: popDownOut1 0.2s ease forwards;
+    animation-delay: 0.3s;
+}
+.closing .fabItem:nth-child(2) {
+  animation: popDownOut2 0.2s ease forwards;
+  animation-delay: 0.2s;
+}
+.closing .fabItem:nth-child(3) {
+  animation: popDownOut3 0.2s ease forwards;
+  animation-delay: 0.1s;
+}
+.fabMenu .fabItem {
+  width: 40px;
+  height: 40px;
+}
+  .filtersList .newFilterForm {
+    width: 100%;
+    padding: 2px;
+    box-sizing: border-box;
+  }
+
+  .filtersList .newFilterForm form {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filtersList .newFilterForm input {
+    width: 75%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 4px;
+    border-radius: 3px;
+    border: none;
+  }
+
+  .filtersList .newFilterForm button {
+    width: 25%;
+    height: 100%;
+    border: none;
+    border-radius: 3px;
+  }
+
+  .iconsList {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  overflow: auto;
+  background-color: lightgrey;
+  padding: 10px;
+}
+.iconItem {
+  color: white;
+  padding: 2px;
+  border-radius: 3px;
+  width: 100px;
+  height: 100px;
+  gap: 2px;
+  font-size: 10px;
+}
+ .iconsList .newIconForm {
+    /* correspond à la taille des .iconItem mobile */
+    min-width: 100px;
+    max-width: 100px;
+    height: 100px;
+    padding: 2px;
+    gap: 8px;
+  }
+
+  .iconsList .newIconForm input,
+  .iconsList .newIconForm button {
+    font-size: 12px;
+    height: 20px;
+  }
+}
+@keyframes popDownIn1 {
+  0% {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translate(45px, 20px);
+    opacity: 1;
+  }
+}
+@keyframes popDownIn2 {
+  0% {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translate(0px, 50px);
+    opacity: 1;
+  }
+}
+@keyframes popDownIn3 {
+  0% {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translate(-45px, 20px);
+    opacity: 1;
+  }
+}
+@keyframes popDownOut1 {
+  from {
+    transform: scale(1) translate(45px, 20px);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+}
+@keyframes popDownOut2 {
+ from {
+    transform: scale(1) translate(0px, 50px);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+}
+@keyframes popDownOut3 {
+  from {
+    transform: scale(1) translate(-45px, 20px);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.2) translate(0, 0);
+    opacity: 0;
+  }
+}

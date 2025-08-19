@@ -54,6 +54,7 @@
   padding: 10px;
   border-radius: 16px 3px 16px 16px;
   border: 2px solid black;
+  z-index: 100;
 }
 .settingsDropdown button {
   width: 100px;
@@ -188,4 +189,17 @@
   background-color: rgba(0, 123, 255, 0.15);
   box-shadow: 0 0 0 2px #007bff;             
   border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+ .filesArborescenceSection {
+    padding: 8px;
+    gap: 8px;
+}
+  .folderTree {
+    padding: 8px;
+  }
+  .settingsContainer {
+    display: none;
+  }
 }
