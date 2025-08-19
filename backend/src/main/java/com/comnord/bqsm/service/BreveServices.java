@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +31,12 @@ public class BreveServices {
     @Autowired
     private WordDocumentService wordDocumentService;
 
+    private String normalize(String input) {
+        if (input == null) return null;
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        return normalized.replaceAll("\\p{M}","").toLowerCase();
+    }
+
     public Iterable<BreveEntity> getAllBreves() {
        Iterable<BreveEntity> breves = breveRepository.findAll();
        if (!breves.iterator().hasNext()) {
@@ -39,21 +46,25 @@ public class BreveServices {
     }
 
     public List<BreveEntity> getAllBrevesForMap(String zone, String categorie, String intervenant, String contributeur, String startDate, String endDate, String date) {
-        Specification<BreveEntity> spec = Specification.where(null);
+        Specification<BreveEntity> spec = (root, query, criteriaBuilder) -> criteriaBuilder.isTrue(criteriaBuilder.literal(true));
 
         if (zone != null && !zone.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("zone"), zone));
+            String lowerZone = zone.toLowerCase();
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(criteriaBuilder.lower(root.get("zone")), lowerZone));
         }
         if (categorie != null && !categorie.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("categorie"), categorie));
+            String lowerCategorie = categorie.toLowerCase();
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(criteriaBuilder.lower(root.get("categorie")), lowerCategorie));
         }
         if (intervenant != null && !intervenant.isEmpty()) {
+            String lowerIntervenant = intervenant.toLowerCase();
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.join("intervenants").get("name"), intervenant));
+                    criteriaBuilder.equal(criteriaBuilder.lower(root.join("intervenants").get("name")), lowerIntervenant));
         }
         if (contributeur != null && !contributeur.isEmpty()) {
+            String lowerContributeur = contributeur.toLowerCase();
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.join("contributeurs").get("name"), contributeur));
+                    criteriaBuilder.equal(criteriaBuilder.lower(root.join("contributeurs").get("name")), lowerContributeur));
         }
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
         try {
@@ -76,21 +87,25 @@ public class BreveServices {
     }
 
     public List<BreveEntity> getAllFilteredBreves(String zone, String categorie, String intervenant, String contributeur, String startDate, String endDate, String date) {
-        Specification<BreveEntity> spec = Specification.where(null);
+        Specification<BreveEntity> spec = (root, query, criteriaBuilder) -> criteriaBuilder.isTrue(criteriaBuilder.literal(true));
 
         if (zone != null && !zone.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("zone"), zone));
+            String lowerZone = zone.toLowerCase();
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(criteriaBuilder.lower(root.get("zone")), lowerZone));
         }
         if (categorie != null && !categorie.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("categorie"), categorie));
+            String lowerCategorie = categorie.toLowerCase();
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(criteriaBuilder.lower(root.get("categorie")), lowerCategorie));
         }
         if (intervenant != null && !intervenant.isEmpty()) {
+            String lowerIntervenant = intervenant.toLowerCase();
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.join("intervenants").get("name"), intervenant));
+                    criteriaBuilder.equal(criteriaBuilder.lower(root.join("intervenants").get("name")), lowerIntervenant));
         }
         if (contributeur != null && !contributeur.isEmpty()) {
+            String lowerContributeur = contributeur.toLowerCase();
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.join("contributeurs").get("name"), contributeur));
+                    criteriaBuilder.equal(criteriaBuilder.lower(root.join("contributeurs").get("name")), lowerContributeur));
         }
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
         try {
@@ -115,28 +130,25 @@ public class BreveServices {
     public Page<BreveEntity> getAllBrevesByPage(int page, int size, String zone, String categorie, String intervenant, String contributeur, String startDate, String endDate, String date) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "bqsmNumb"));
 
-        Specification<BreveEntity> spec = Specification.where(null);
+        Specification<BreveEntity> spec = (root, query, criteriaBuilder) -> criteriaBuilder.isTrue(criteriaBuilder.literal(true));
 
-        // Filtre sur la colonne "zone"
         if (zone != null && !zone.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("zone"), zone));
+            String lowerZone = zone.toLowerCase();
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(criteriaBuilder.lower(root.get("zone")), lowerZone));
         }
-
-        // Filtre sur la colonne "categorie"
         if (categorie != null && !categorie.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("categorie"), categorie));
+            String lowerCategorie = categorie.toLowerCase();
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(criteriaBuilder.lower(root.get("categorie")), lowerCategorie));
         }
-
-        // Filtre sur la relation "intervenants"
         if (intervenant != null && !intervenant.isEmpty()) {
+            String lowerIntervenant = intervenant.toLowerCase();
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.join("intervenants").get("name"), intervenant));
+                    criteriaBuilder.equal(criteriaBuilder.lower(root.join("intervenants").get("name")), lowerIntervenant));
         }
-
-        // Filtre sur la relation "contributeurs"
         if (contributeur != null && !contributeur.isEmpty()) {
+            String lowerContributeur = contributeur.toLowerCase();
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.join("contributeurs").get("name"), contributeur));
+                    criteriaBuilder.equal(criteriaBuilder.lower(root.join("contributeurs").get("name")), lowerContributeur));
         }
 
         // Filtre sur la plage de dates
