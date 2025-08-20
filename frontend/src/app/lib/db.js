@@ -94,8 +94,6 @@ export async function getBreveById(id) {
 }
 
 export async function updateBreveById(id, updatedBreve) {
-  console.log("Payload envoyé :", JSON.stringify(updatedBreve, null, 2));
-
   try {
     const response = await fetch(`${OAUTH2_URL}/api/breves/update?id=${id}`, {
       method: "POST",
@@ -993,6 +991,69 @@ export async function deleteBreveIconAssociation(id) {
   } catch (error) {
     console.error(
       "Erreur lors de la suppression de l'association :",
+      error.message
+    );
+    throw error;
+  }
+}
+
+export async function getViewTrackerByBreveId(breveId) {
+  try {
+    const response = await fetch(
+      `${OAUTH2_URL}/api/breveviewtracker/?breveId=${breveId}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération du view tracker :",
+      error.message
+    );
+    throw error;
+  }
+}
+
+export async function addAViewTrackerToBreve(breveId, userEmail) {
+  try {
+    const response = await fetch(
+      `${OAUTH2_URL}/api/breveviewtracker/create?breveId=${breveId}&userEmail=${userEmail}`,
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du view tracker :", error.message);
+    throw error;
+  }
+}
+
+export async function userHaveAlreadyReadThisBreve(breveId, userEmail) {
+  try {
+    const response = await fetch(
+      `${OAUTH2_URL}/api/breveviewtracker/hasViewed?breveId=${breveId}&userEmail=${userEmail}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(
+      "Erreur lors de la vérification de la lecture de la brève :",
       error.message
     );
     throw error;

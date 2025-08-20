@@ -9,11 +9,11 @@ import {
   getAllLinksByBreveId,
   getCommentsByBreveId,
   getBreveAssociateIcons,
+  addAViewTrackerToBreve,
 } from "../lib/db";
 import { getIconByCategorie } from "../lib/iconSelector";
 import UpdateBreveSection from "./updateBreve";
 import styles from "./breveDetails.module.css";
-import Image from "next/image";
 import BreveAddCommentaires from "./breveAddCommentaires";
 import BreveListCommentaires from "./breveListCommentaires";
 
@@ -25,7 +25,7 @@ export default function BreveDetails({
   hasPrev,
   hasNext,
 }) {
-  const { userRole, needRefresh } = useData();
+  const { userRole, needRefresh, setNeedRefresh, userEmail } = useData();
   const [pictures, setPictures] = useState([]);
   const [current, setCurrent] = useState(0);
   const [intervenants, setIntervenants] = useState([]);
@@ -77,15 +77,34 @@ export default function BreveDetails({
 
   if (!breve) return null;
 
+  const handleAddView = async () => {
+    await addAViewTrackerToBreve(breve.id, userEmail);
+    setNeedRefresh(!needRefresh);
+  };
+
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         <div className={styles.modalNav}>
           <div>
-            <button onClick={onPrev} disabled={!hasPrev} title="précédent">
+            <button
+              onClick={() => {
+                onPrev();
+                handleAddView();
+              }}
+              disabled={!hasPrev}
+              title="précédent"
+            >
               <span className="material-symbols-outlined">arrow_back</span>
             </button>
-            <button onClick={onNext} disabled={!hasNext} title="suivant">
+            <button
+              onClick={() => {
+                onNext();
+                handleAddView();
+              }}
+              disabled={!hasNext}
+              title="suivant"
+            >
               <span className="material-symbols-outlined">arrow_forward</span>
             </button>
           </div>

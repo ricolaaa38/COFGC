@@ -33,16 +33,33 @@ public class BreveViewTrackerControllers {
         return ResponseEntity.ok(breveViewTracker);
     }
 
+    @GetMapping("/hasViewed")
+    public ResponseEntity<Boolean> hasUserViewedBreve(
+            @RequestParam int breveId,
+            @RequestParam String userEmail) {
+        boolean hasViewed = breveViewTrackerServices.hasUserViewedBreve(breveId, userEmail);
+        return ResponseEntity.ok(hasViewed);
+    }
+
     @PostMapping("/create")
-    public ResponseEntity<BreveViewTrackerEntity> createBreveViewTracker(@RequestBody BreveViewTrackerEntity breveViewTracker) {
+    public ResponseEntity<BreveViewTrackerEntity> createBreveViewTracker(
+            @RequestParam int breveId,
+            @RequestParam String userEmail) {
+
+        BreveEntity breve = breveServices.getBreveById(breveId);
+
         Optional<BreveViewTrackerEntity> alreadyExistEntry = breveViewTrackerRepository.findViewTrackerByBreveIdAndUserEmail(
-                breveViewTracker.getBreveId(), breveViewTracker.getUserEmail()
+                breve, userEmail
         );
         if (alreadyExistEntry.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(alreadyExistEntry.get());
         } else {
-            BreveViewTrackerEntity addBreveViewTracker = breveViewTrackerServices.saveBreveViewTracker(breveViewTracker);
-            return ResponseEntity.status(HttpStatus.CREATED).body(addBreveViewTracker);
+            BreveViewTrackerEntity entity = new BreveViewTrackerEntity();
+            entity.setBreveId(breve);
+            entity.setUserEmail(userEmail);
+            entity.setDate(java.time.LocalDateTime.now());
+            BreveViewTrackerEntity saved = breveViewTrackerRepository.save(entity);
+            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         }
     }
 }

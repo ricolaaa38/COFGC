@@ -75,9 +75,9 @@ export default function AddANewBreveSection({ handleClose }) {
           <div className={styles.formRow}>
             <label htmlFor="bqsmNumb">Numéro BQSM</label>
             <input
-              type="text"
+              type="date"
               name="bqsmNumb"
-              value={breveInfo.bqsmNumb}
+              value={breveInfo.bqsmNumb.slice(0, 10)}
               onChange={handleChange}
               required
             />

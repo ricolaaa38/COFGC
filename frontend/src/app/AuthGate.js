@@ -9,7 +9,7 @@ const FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 export default function AuthGate({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [checking, setChecking] = useState(true);
-  const { setUserRole } = useData();
+  const { setUserRole, setUserEmail } = useData();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -31,6 +31,7 @@ export default function AuthGate({ children }) {
         if (resp.ok) {
           const data = await resp.json();
           setIsAuthenticated(true);
+          setUserEmail(data.email);
 
           if (data.roles && data.roles.length > 0) {
             setUserRole(data.roles[0]);

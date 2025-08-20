@@ -20,13 +20,14 @@ public class BreveViewTrackerServices {
     @Autowired
     private BreveServices breveServices;
 
+    public boolean hasUserViewedBreve(int breveId, String userEmail) {
+        BreveEntity breve = breveServices.getBreveById(breveId);
+        return breveViewTrackerRepository.findViewTrackerByBreveIdAndUserEmail(breve, userEmail).isPresent();
+    }
+
     public List<BreveViewTrackerEntity> getBreveViewTrackerByBreveId(BreveEntity breveId) {
         try {
-            List<BreveViewTrackerEntity> breveViewTracker = breveViewTrackerRepository.findViewTrackerByBreveId(breveId);
-            if (breveViewTracker.isEmpty()) {
-                throw new BrevesViewTrackerNotFoundException("Aucun tracker trouvé pour la brève avec l'ID : " + breveId.getId());
-            }
-            return breveViewTracker;
+            return breveViewTrackerRepository.findViewTrackerByBreveId(breveId);
         } catch (Exception e) {
             throw new ServiceException("Failed to retrieve BreveViewTracker", e);
         }
