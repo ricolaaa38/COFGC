@@ -36,7 +36,7 @@ export default function BreveListCommentaires({
           commentaires.map((commentaire, index) => (
             <div key={index} className={Styles.commentaire}>
               <div className={Styles.commentaireRow}>
-                <h4>Ajouter le :</h4>
+                <h4>Ajouté le :</h4>
                 <p>{commentaire.date}</p>
               </div>
               <div className={Styles.commentaireRow}>

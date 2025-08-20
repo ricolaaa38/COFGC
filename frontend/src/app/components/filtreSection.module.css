@@ -26,11 +26,12 @@
 }
 
 .selectFilter,
-.labelFilter, .dateFilter {
+.labelFilter,
+.dateFilter {
   display: flex;
   flex-direction: column;
   justify-content: center; /* centre vertical */
-  align-items: center;     /* centre horizontal */
+  align-items: center; /* centre horizontal */
   height: 100%;
   width: 16%;
   background-color: rgb(110, 110, 110);
@@ -44,12 +45,14 @@
 
 .labelFilter:hover,
 .selectFilter:hover,
-.dateFilter:hover, .dateFilter:hover label {
+.dateFilter:hover,
+.dateFilter:hover label {
   cursor: pointer;
   background-color: rgb(130, 130, 130);
 }
 
-.labelFilter input, .dateFilter input {
+.labelFilter input,
+.dateFilter input {
   width: 95%;
   text-align: center;
   background-color: lightgrey;
@@ -60,14 +63,12 @@
   height: auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   /* grille globale : 3 colonnes "égales" + 4ème colonne plus petite pour le reset */
   #filtreSection {
     display: grid;
-    grid-template-columns: 0.4fr 1.2fr 1.2fr 1.2fr;
-    grid-auto-rows: 50%;
+    grid-template-columns: 0.4fr 1fr 1fr 1fr 1fr 1fr 1fr;
     box-sizing: border-box;
-
   }
 
   /* par défaut chaque enfant remplit sa case */
@@ -77,14 +78,45 @@
     box-sizing: border-box;
   }
 
-  /* placer explicitement les 6 filtres (3 sur la 1ère ligne, 3 sur la 2ème) */
-  #filtreSection > *:nth-child(2) { grid-column: 2; grid-row: 1; }
-  #filtreSection > *:nth-child(3) { grid-column: 3; grid-row: 1; }
-  #filtreSection > *:nth-child(4) { grid-column: 4; grid-row: 1; }
+  #filtreSection label,
+  #filtreSection p {
+    font-size: 10px;
+  }
+}
 
-  #filtreSection > *:nth-child(5) { grid-column: 2; grid-row: 2; }
-  #filtreSection > *:nth-child(6) { grid-column: 3; grid-row: 2; }
-  #filtreSection > *:nth-child(7) { grid-column: 4; grid-row: 2; }
+@media (max-width: 768px) {
+  #filtreSection {
+    display: grid;
+    grid-template-columns: 0.4fr 1.2fr 1.2fr 1.2fr;
+    grid-auto-rows: 50%;
+    box-sizing: border-box;
+  }
+  /* placer explicitement les 6 filtres (3 sur la 1ère ligne, 3 sur la 2ème) */
+  #filtreSection > *:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  #filtreSection > *:nth-child(3) {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  #filtreSection > *:nth-child(4) {
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  #filtreSection > *:nth-child(5) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  #filtreSection > *:nth-child(6) {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  #filtreSection > *:nth-child(7) {
+    grid-column: 4;
+    grid-row: 2;
+  }
 
   /* bouton reset : 4ème colonne sur la 2ème ligne */
   /* ici j'assume que reset est l'enfant 7 ; ajuste l'index si nécessaire */
@@ -94,13 +126,4 @@
     align-self: center;
     justify-self: center;
   }
-
-
-  #filtreSection label, #filtreSection p {
-    font-size: 10px;
-  }
 }
-
-
-
-

@@ -25,12 +25,12 @@ function BreveCard({ item, onOpenDetails, onFocusOnMap }, ref) {
       </div>
       <div className={styles.breveCardButton}>
         <button onClick={onOpenDetails}>
-          <span className="material-symbols-outlined">visibility</span>lire la
-          breve
+          <span className="material-symbols-outlined">visibility</span>
+          <p>lire la breve</p>
         </button>
         <button onClick={onFocusOnMap}>
-          <span className="material-symbols-outlined">location_on</span>Voir sur
-          la carte
+          <span className="material-symbols-outlined">location_on</span>
+          <p>Voir sur la carte</p>
         </button>
       </div>
     </section>

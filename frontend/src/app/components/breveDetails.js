@@ -92,12 +92,14 @@ export default function BreveDetails({
           {userRole === "admin" ? (
             <>
               <button
+                className={styles.breveButtonUpdate}
                 title="modifier"
                 onClick={() => setOpenUpdateBreve(!openUpdateBreve)}
               >
                 <span className="material-symbols-outlined">edit_square</span>
               </button>
               <button
+                className={styles.breveButtonAdd}
                 title="ajouter un commentaire"
                 onClick={() => {
                   setOpenCommentaireSection(!openCommentaireSection);

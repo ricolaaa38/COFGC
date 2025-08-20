@@ -17,7 +17,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-   background-color: #ececec;
+  background-color: #ececec;
   color: black;
   border-radius: 3px;
 }
@@ -26,7 +26,7 @@
   font-weight: 900;
 }
 .arborescenceHeader span {
- transform: scale(1.5);
+  transform: scale(1.5);
 }
 .arborescenceHeader span:hover {
   cursor: pointer;
@@ -67,13 +67,14 @@
 .settingsDropdown span {
   transform: scale(1);
 }
-.settingsDropdown span:hover, .settingsDropdown button:hover {
+.settingsDropdown span:hover,
+.settingsDropdown button:hover {
   transform: scale(1);
   cursor: pointer;
 }
 
 .folderTree {
- background-color: #ececec;
+  background-color: #ececec;
   width: 100%;
   height: 100%;
   border-radius: 3px;
@@ -101,14 +102,14 @@
 }
 
 .dragOverlay {
- display: inline-flex;
- flex-direction: row;
- justify-content: flex-start;
- align-items: center;
- border: 1px solid #ddd;
- padding: 4px 8px;
- transform: translate(20px, 10px);
- backdrop-filter: blur(4px);
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 4px 8px;
+  transform: translate(20px, 10px);
+  backdrop-filter: blur(4px);
 }
 .dragOverlay span {
   margin-right: 6px;
@@ -118,8 +119,8 @@
   white-space: nowrap;
 }
 
-
-.folderName, .fileName {
+.folderName,
+.fileName {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -131,23 +132,23 @@
 .folderName span {
   color: rgb(150, 125, 0);
 }
-.folderName:hover, .childFile:hover {
+.folderName:hover,
+.childFile:hover {
   cursor: pointer;
   color: rgb(0, 0, 165);
 }
 
-.folderName:hover p, .fileName:hover p {
+.folderName:hover p,
+.fileName:hover p {
   text-decoration: underline;
 }
-
-
 
 .children {
   margin-left: 20px;
   margin-top: 5px;
 }
 
- .childFile {
+.childFile {
   margin-bottom: 5px;
   display: flex;
   flex-direction: row;
@@ -159,7 +160,9 @@
   color: rgb(200, 0, 0);
 }
 
-.addFolderIcon, .addFileIcon, .deleteIcon {
+.addFolderIcon,
+.addFileIcon,
+.deleteIcon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -168,11 +171,15 @@
   background-color: transparent;
   margin-left: 10px;
 }
-.addFolderIcon span, .addFileIcon span, .deleteIcon span {
+.addFolderIcon span,
+.addFileIcon span,
+.deleteIcon span {
   color: black;
   transform: scale(1.1);
 }
-.addFolderIcon:hover span, .addFileIcon:hover span, .deleteIcon:hover span {
+.addFolderIcon:hover span,
+.addFileIcon:hover span,
+.deleteIcon:hover span {
   transform: scale(1.3);
   cursor: pointer;
 }
@@ -187,15 +194,15 @@
 
 .isOver {
   background-color: rgba(0, 123, 255, 0.15);
-  box-shadow: 0 0 0 2px #007bff;             
+  box-shadow: 0 0 0 2px #007bff;
   border-radius: 4px;
 }
 
-@media (max-width: 768px) {
- .filesArborescenceSection {
-    padding: 8px;
-    gap: 8px;
-}
+@media (max-width: 992px) {
+  .filesArborescenceSection {
+    padding: 5px;
+    gap: 5px;
+  }
   .folderTree {
     padding: 8px;
   }

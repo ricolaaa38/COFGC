@@ -19,7 +19,6 @@ import OverviewMap from "ol/control/OverviewMap";
 import MousePosition from "ol/control/MousePosition";
 import { toLonLat, fromLonLat } from "ol/proj";
 import BrevesGestionButtons from "../components/brevesGestionButton";
-import { useData } from "../context/DataContext";
 
 export default function Carte() {
   const mapRef = useRef(null);
@@ -29,7 +28,6 @@ export default function Carte() {
   const [focusedBreve, setFocusedBreve] = useState(null);
   const [baseLayer, setBaseLayer] = useState("satellite");
   const [showOpenSeaMap, setShowOpenSeaMap] = useState(false);
-  const { brevesForExport } = useData();
 
   const baseLayersRef = useRef({
     osm: new TileLayer({

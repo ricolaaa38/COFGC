@@ -1,59 +1,59 @@
 .settingsPage {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(221,221,221);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(221, 221, 221);
 }
 
 .settingsContains {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 25px 50px 50px;
-    gap: 20px;
-    overflow-y: auto;
-    overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 25px 50px 50px;
+  gap: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .settingsContains h2 {
-    font-size: 30px;
-    font-weight: 800;
-    width: 100%;
-    text-align: center;
-    background-color: white;
-    border-radius: 3px;
+  font-size: 30px;
+  font-weight: 800;
+  width: 100%;
+  text-align: center;
+  background-color: white;
+  border-radius: 3px;
 }
 
 .categoriesBtns {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
 }
 
 .categoriesBtns button {
-    width: 150px;
-    height: 40px;
-    padding: 10px;
-    border: none;
-    border-radius: 3px;
+  width: 150px;
+  height: 40px;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
 }
 .categoriesBtns button:hover {
-    opacity: 0.8;
-    cursor: pointer;
+  opacity: 0.8;
+  cursor: pointer;
 }
 
 .categoriesBtns .active {
-    background-color: blue;
-    border: none;
-    border-radius: 3px;
+  background-color: blue;
+  border: none;
+  border-radius: 3px;
 }
 
 .filtersList {
@@ -140,7 +140,7 @@
   position: absolute;
   left: 0;
   top: 50%;
-    transform: translateY(-50%);
+  transform: translateY(-50%);
   color: #444;
   font-size: 1.2rem;
   line-height: 35px;
@@ -161,7 +161,7 @@
   text-align: center;
 }
 .updateForm button {
-    width: 25%;
+  width: 25%;
   height: 90%;
   border: none;
   border-radius: 3px;
@@ -173,14 +173,14 @@
 }
 
 .deleteButton {
-    cursor: pointer;
-    width: 30px;
-    height: 90%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 3px;
+  cursor: pointer;
+  width: 30px;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 3px;
 }
 
 .iconsList {
@@ -235,15 +235,14 @@
   box-sizing: border-box;
 }
 
-
 /* Animation et css ouverture/fermeture menu bouttons add/update/delete */
 .fabContainer {
-    position: relative;
-    width: auto;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  width: auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .fabHoverZone {
   position: relative;
@@ -261,40 +260,40 @@
   z-index: 0;
 }
 .fabContainer .fabMain {
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background: black;
-    color: white;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
-    overflow: hidden;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
 }
 .fabMain span {
-    transform: scale(1);
-    opacity: 1;
-    transition: opacity 0.2s ease-in, transform 0.4s ease;
+  transform: scale(1);
+  opacity: 1;
+  transition: opacity 0.2s ease-in, transform 0.4s ease;
 }
 .fabMain.open span {
-    opacity: 0;
-    transform: scale(6) rotate(135deg);
+  opacity: 0;
+  transform: scale(6) rotate(135deg);
 }
 .fabMain.closing span {
-    transform: scale(1) rotate(0deg);
+  transform: scale(1) rotate(0deg);
 }
 .fabContainer .fabMenu {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100px;
-    height: 100px;
-    pointer-events: none;
-    z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  z-index: 1;
 }
 .fabMenu .fabItem {
   position: absolute;
@@ -311,7 +310,7 @@
   opacity: 0;
   transform: scale(0.2) translate(0, 0);
 }
-.fabMenu .fabItem:hover{
+.fabMenu .fabItem:hover {
   background-color: #ff5e5e;
 }
 .closing .fabItem:nth-child(1) {
@@ -343,8 +342,8 @@
 
 /* Animation de fermeture */
 .closing .fabItem:nth-child(1) {
-    animation: popOut1 0.2s ease forwards;
-    animation-delay: 0.3s;
+  animation: popOut1 0.2s ease forwards;
+  animation-delay: 0.3s;
 }
 .closing .fabItem:nth-child(2) {
   animation: popOut2 0.2s ease forwards;
@@ -354,7 +353,6 @@
   animation: popOut3 0.2s ease forwards;
   animation-delay: 0.1s;
 }
-
 
 @keyframes popIn1 {
   0% {
@@ -397,7 +395,7 @@
   }
 }
 @keyframes popOut2 {
- from {
+  from {
     transform: scale(1) translate(60px, 0px);
     opacity: 1;
   }
@@ -425,88 +423,88 @@
     background-color: rgb(221, 221, 221);
 } */
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .settingsContains {
     padding: 10px 10px 10px;
     gap: 10px;
-}
-.categoriesBtns {
+  }
+  .categoriesBtns {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 5px;
-}
-.categoriesBtns button {
+  }
+  .categoriesBtns button {
     width: 100%;
     height: 35px;
     padding: 5px;
     border: none;
     border-radius: 3px;
-}
-.categoriesBtns button:hover {
+  }
+  .categoriesBtns button:hover {
     opacity: 0.8;
     cursor: pointer;
-}
+  }
 
-.categoriesBtns .active {
+  .categoriesBtns .active {
     background-color: blue;
     border: none;
     border-radius: 3px;
-}
-.fabContainer .fabMain {
+  }
+  .fabContainer .fabMain {
     width: 40px;
     height: 40px;
-}
- .categoriesBtns > .fabContainer {
+  }
+  .categoriesBtns > .fabContainer {
     grid-column: 1 / -1;
     justify-self: center;
     order: 99;
-    flex: none;            
+    flex: none;
     padding-top: 8px;
   }
   .closing .fabItem:nth-child(1) {
     opacity: 1;
     transform: scale(1) translate(45px, 20px);
-}
+  }
   .closing .fabItem:nth-child(2) {
     opacity: 1;
     transform: scale(1) translate(0px, 50px);
-}
+  }
   .closing .fabItem:nth-child(3) {
     opacity: 1;
     transform: scale(1) translate(-45px, 20px);
-}
-/* Animation d’apparition */
-.open .fabItem:nth-child(1) {
-  animation: popDownIn1 0.2s ease forwards;
-  animation-delay: 0.1s;
-}
-.open .fabItem:nth-child(2) {
-  animation: popDownIn2 0.2s ease forwards;
-  animation-delay: 0.2s;
-}
-.open .fabItem:nth-child(3) {
-  animation: popDownIn3 0.2s ease forwards;
-  animation-delay: 0.3s;
-}
+  }
+  /* Animation d’apparition */
+  .open .fabItem:nth-child(1) {
+    animation: popDownIn1 0.2s ease forwards;
+    animation-delay: 0.1s;
+  }
+  .open .fabItem:nth-child(2) {
+    animation: popDownIn2 0.2s ease forwards;
+    animation-delay: 0.2s;
+  }
+  .open .fabItem:nth-child(3) {
+    animation: popDownIn3 0.2s ease forwards;
+    animation-delay: 0.3s;
+  }
 
-/* Animation de fermeture */
-.closing .fabItem:nth-child(1) {
+  /* Animation de fermeture */
+  .closing .fabItem:nth-child(1) {
     animation: popDownOut1 0.2s ease forwards;
     animation-delay: 0.3s;
-}
-.closing .fabItem:nth-child(2) {
-  animation: popDownOut2 0.2s ease forwards;
-  animation-delay: 0.2s;
-}
-.closing .fabItem:nth-child(3) {
-  animation: popDownOut3 0.2s ease forwards;
-  animation-delay: 0.1s;
-}
-.fabMenu .fabItem {
-  width: 40px;
-  height: 40px;
-}
+  }
+  .closing .fabItem:nth-child(2) {
+    animation: popDownOut2 0.2s ease forwards;
+    animation-delay: 0.2s;
+  }
+  .closing .fabItem:nth-child(3) {
+    animation: popDownOut3 0.2s ease forwards;
+    animation-delay: 0.1s;
+  }
+  .fabMenu .fabItem {
+    width: 40px;
+    height: 40px;
+  }
   .filtersList .newFilterForm {
     width: 100%;
     padding: 2px;
@@ -539,29 +537,29 @@
   }
 
   .iconsList {
-  width: 100%;
-  height: auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  overflow: auto;
-  background-color: lightgrey;
-  padding: 10px;
-}
-.iconItem {
-  color: white;
-  padding: 2px;
-  border-radius: 3px;
-  width: 100px;
-  height: 100px;
-  gap: 2px;
-  font-size: 10px;
-}
- .iconsList .newIconForm {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    overflow: auto;
+    background-color: lightgrey;
+    padding: 10px;
+  }
+  .iconItem {
+    color: white;
+    padding: 2px;
+    border-radius: 3px;
+    width: 100%;
+    height: 175px;
+    gap: 2px;
+    font-size: 10px;
+  }
+  .iconsList .newIconForm {
     /* correspond à la taille des .iconItem mobile */
-    min-width: 100px;
-    max-width: 100px;
-    height: 100px;
+    min-width: 100%;
+    max-width: 100%;
+    height: 100%;
     padding: 2px;
     gap: 8px;
   }
@@ -613,7 +611,7 @@
   }
 }
 @keyframes popDownOut2 {
- from {
+  from {
     transform: scale(1) translate(0px, 50px);
     opacity: 1;
   }
@@ -630,5 +628,41 @@
   to {
     transform: scale(0.2) translate(0, 0);
     opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .iconsList {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    overflow: auto;
+    background-color: lightgrey;
+    padding: 10px;
+  }
+  .iconItem {
+    color: white;
+    padding: 2px;
+    border-radius: 3px;
+    width: 100%;
+    min-height: 100px;
+    height: 100%;
+    gap: 2px;
+    font-size: 10px;
+  }
+  .iconsList .newIconForm {
+    min-width: 100px;
+    max-width: 100px;
+    height: 100px;
+    padding: 2px;
+    gap: 8px;
+  }
+
+  .iconsList .newIconForm input,
+  .iconsList .newIconForm button {
+    font-size: 12px;
+    height: 20px;
   }
 }

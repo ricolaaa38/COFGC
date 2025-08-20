@@ -109,7 +109,7 @@ export default function BreveSection({
           {userRole === "admin" && (
             <span
               onClick={() => setOpenAddBreve(!openAddBreve)}
-              className="material-symbols-outlined"
+              className={`material-symbols-outlined ${styles.addANewBreveBtn}`}
               title="Ajouter une brève"
             >
               add

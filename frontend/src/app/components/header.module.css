@@ -1,142 +1,139 @@
 .header {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0;
-    padding: 20px;
-    background-color: #ececec;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 20px;
+  background-color: #ececec;
 }
 
 .header h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    position: relative;
-    text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  position: relative;
+  text-align: center;
 }
 .header h1 a:hover p {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .header h1 span {
-    font-size: 4rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-75%, -50%);
-    z-index: 1;
-    opacity: 0.4;
+  font-size: 4rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-75%, -50%);
+  z-index: 1;
+  opacity: 0.4;
 }
 
 .MenuClosed,
 .MenuOpen {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  gap: 20px;
 }
 
 .MenuClosed a,
 .MenuOpen a {
-    text-decoration: none;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    font-weight: 600;
-    opacity: 0.8;
-    transition: transform 0.2s ease, opacity 0.1s ease;
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  opacity: 0.8;
+  transition: transform 0.2s ease, opacity 0.1s ease;
 }
 
 .MenuClosed a:hover,
 .MenuOpen a:hover {
-    transform: scale(1.1);
-    opacity: 1;
+  transform: scale(1.1);
+  opacity: 1;
 }
 
 .active {
-    transform: scale(1.1);
-    opacity: 1;
-    color: blue;
+  transform: scale(1.1);
+  opacity: 1;
+  color: blue;
 }
 
 .menuButton {
-    display: none; 
-    justify-content: center;
-    align-items: center;
-    border-radius: 3px;
-    border: none;
-    background-color: black;
-    color: white;
-    padding: 6px;
-    line-height: 1;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  border: none;
+  background-color: black;
+  color: white;
+  padding: 6px;
+  line-height: 1;
 }
 .menuButton:hover {
-    cursor: pointer;
-    opacity: 0.8;
+  cursor: pointer;
+  opacity: 0.8;
 }
 
+@media (max-width: 992px) {
+  .menuButton {
+    display: flex;
+  }
 
-@media (max-width: 768px) {
-    .menuButton {
-        display: flex;
-    }
+  .MenuClosed {
+    display: none;
+  }
 
-    .MenuClosed {
-        display: none;
-    }
-
-    .MenuOpen {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        position: absolute;
-        width: auto;
-        top: 75px;
-        right: 0;
-        background-color: white;
-        padding: 5px;
-        gap: 5px;
-        z-index: 50;
-        border-radius: 3px;
-    }
-    .MenuOpen div {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        background-color: lightgrey;
-        padding: 5px;
-        white-space: nowrap;
-        border-radius: 3px;
-    }
-    .MenuOpen div a {
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-    }
-    .active {
-        transform: scale(1.0);
-    }
-    .MenuOpen div button {
-        width: 100%;
-        background-color: black;
-        color: white;
-        border: none;
-        border-radius: 3px;
-    }
+  .MenuOpen {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    width: auto;
+    top: 75px;
+    right: 0;
+    background-color: white;
+    padding: 5px;
+    gap: 5px;
+    z-index: 50;
+    border-radius: 3px;
+  }
+  .MenuOpen div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: lightgrey;
+    padding: 5px;
+    white-space: nowrap;
+    border-radius: 3px;
+  }
+  .MenuOpen div a {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .active {
+    transform: scale(1);
+  }
+  .MenuOpen div button {
+    width: 100%;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 3px;
+  }
 }
 
 @media (max-width: 1024px) {
-    .header h1 span {
-        font-size: 3rem;
-        opacity: 0.25;
-    }
+  .header h1 span {
+    font-size: 3rem;
+    opacity: 0.25;
+  }
 }
-
-
