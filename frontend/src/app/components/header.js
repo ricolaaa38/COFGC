@@ -83,17 +83,28 @@ export default function Header() {
           </Link>
         </div>
         {userRole === "admin" && (
-          <div>
-            <Link
-              href="/settings"
-              title="settings"
-              className={pathname === "/settings" ? styles.active : ""}
-              onClick={closeMenu}
-            >
-              <span className="material-symbols-outlined">settings</span>
-              <p>Paramètres</p>
-            </Link>
-          </div>
+          <>
+            <div>
+              <Link
+                href="/settings"
+                title="settings"
+                className={pathname === "/settings" ? styles.active : ""}
+                onClick={closeMenu}
+              >
+                <span className="material-symbols-outlined">settings</span>
+                <p>Paramètres</p>
+              </Link>
+            </div>
+            <div>
+              <Link
+                href="/statistique"
+                className={pathname === "/statistique" ? styles.active : ""}
+              >
+                <span className="material-symbols-outlined">query_stats</span>
+                <p>Statistiques</p>
+              </Link>
+            </div>
+          </>
         )}
         <div>
           <button onClick={handleLogout} title="Déconnexion">
@@ -103,16 +114,4 @@ export default function Header() {
       </nav>
     </header>
   );
-}
-
-{
-  /* <div>
-          <Link
-            href="/profil"
-            className={pathname === "/profil" ? styles.active : ""}
-          >
-            <span className="material-symbols-outlined">person</span>
-            <p>Profil</p>
-          </Link>
-        </div> */
 }

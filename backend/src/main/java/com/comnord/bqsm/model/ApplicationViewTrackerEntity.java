@@ -21,4 +21,7 @@ public class ApplicationViewTrackerEntity {
 
     @Column(name = "user_email", nullable = false)
     private String userEmail;
+
+    @Column(name = "connection_count", nullable = false)
+    private int connectionCount = 1;
 }

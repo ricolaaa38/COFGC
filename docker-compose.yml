@@ -12,6 +12,20 @@ services:
       - "5432:5432"
     networks:
       - bqsm-network
+  bqsm-pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - bqsm-postgres
+    networks:
+      - bqsm-network
 
   bqsm-keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -31,7 +45,6 @@ services:
       - "8080:8080"
     networks:
       - bqsm-network
-      
 
   bqsm-backend:
     image: bqsm-backend:latest
@@ -92,3 +105,4 @@ networks:
 volumes:
   db_data:
   keycloak_data:
+  pgadmin_data:

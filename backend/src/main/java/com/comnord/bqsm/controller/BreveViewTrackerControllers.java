@@ -52,7 +52,10 @@ public class BreveViewTrackerControllers {
                 breve, userEmail
         );
         if (alreadyExistEntry.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(alreadyExistEntry.get());
+            BreveViewTrackerEntity existingEntry = alreadyExistEntry.get();
+            existingEntry.setViewCount(existingEntry.getViewCount() + 1);
+            breveViewTrackerServices.saveBreveViewTracker(existingEntry);
+            return ResponseEntity.status(HttpStatus.OK).body(existingEntry);
         } else {
             BreveViewTrackerEntity entity = new BreveViewTrackerEntity();
             entity.setBreveId(breve);

@@ -25,4 +25,7 @@ public class BreveViewTrackerEntity {
     @Column(name= "date", nullable = false)
     private LocalDateTime date;
 
+    @Column(name = "view_count", nullable = false)
+    private int viewCount = 1;
+
 }

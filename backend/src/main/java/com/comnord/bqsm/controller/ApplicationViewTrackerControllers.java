@@ -1,6 +1,7 @@
 package com.comnord.bqsm.controller;
 
 import com.comnord.bqsm.model.ApplicationViewTrackerEntity;
+import com.comnord.bqsm.model.dto.ConnectionStatsDTO;
 import com.comnord.bqsm.repository.ApplicationViewTrackerRepository;
 import com.comnord.bqsm.service.ApplicationViewTrackerServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -33,16 +36,32 @@ public class ApplicationViewTrackerControllers {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ApplicationViewTrackerEntity> createApplicationViewTracker(@RequestBody ApplicationViewTrackerEntity applicationViewTracker) {
-        LocalDateTime currentDate = LocalDate.now().atStartOfDay();
-        Optional<ApplicationViewTrackerEntity> alreadyExistEntry = applicationViewTrackerRepository.findApplicationViewTrackerByDateAndUserEmail(
-                currentDate, applicationViewTracker.getUserEmail()
-        );
+    public ResponseEntity<ApplicationViewTrackerEntity> createApplicationViewTracker(@RequestParam String userEmail) {
+
+        LocalDate currentDate = LocalDate.now();
+        java.sql.Date sqlDate = java.sql.Date.valueOf(currentDate);
+        Optional<ApplicationViewTrackerEntity> alreadyExistEntry = applicationViewTrackerRepository.findApplicationViewTrackerByDateAndUserEmail(sqlDate, userEmail);
         if (alreadyExistEntry.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(alreadyExistEntry.get());
+            ApplicationViewTrackerEntity existingEntry = alreadyExistEntry.get();
+            existingEntry.setConnectionCount(existingEntry.getConnectionCount() + 1);
+            applicationViewTrackerServices.saveApplicationViewTracker(existingEntry);
+            return ResponseEntity.status(HttpStatus.OK).body(existingEntry);
         } else {
+            ApplicationViewTrackerEntity applicationViewTracker = new ApplicationViewTrackerEntity();
+            applicationViewTracker.setUserEmail(userEmail);
+            applicationViewTracker.setConnectionCount(1);
             ApplicationViewTrackerEntity addApplicationViewTracker = applicationViewTrackerServices.saveApplicationViewTracker(applicationViewTracker);
             return ResponseEntity.status(HttpStatus.CREATED).body(addApplicationViewTracker);
         }
+    }
+
+    @GetMapping("/total-connection-per-days")
+    public ResponseEntity<List<Map.Entry<LocalDate, Integer>>> getTotalConnectionPerDays() {
+        return ResponseEntity.ok(applicationViewTrackerServices.getTotalConnectionPerDays());
+    }
+
+    @GetMapping("/connection-stats")
+    public ResponseEntity<ConnectionStatsDTO> getConnectionStats() {
+        return ResponseEntity.ok(applicationViewTrackerServices.getConnectionStats());
     }
 }

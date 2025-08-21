@@ -77,10 +77,25 @@ export default function BreveDetails({
 
   if (!breve) return null;
 
-  const handleAddView = async () => {
-    await addAViewTrackerToBreve(breve.id, userEmail);
-    setNeedRefresh(!needRefresh);
-  };
+  useEffect(() => {
+    if (!breve?.id) return;
+    if (typeof window === "undefined") return;
+
+    window.__lastBreveViewTimestamp = window.__lastBreveViewTimestamp || {};
+    const now = Date.now();
+    const last = window.__lastBreveViewTimestamp[breve.id] || 0;
+    const THROTTLE_MS = 2000;
+    if (now - last < THROTTLE_MS) return;
+
+    window.__lastBreveViewTimestamp[breve.id] = now;
+
+    addAViewTrackerToBreve(breve.id, userEmail)
+      .then(() => setNeedRefresh((s) => !s))
+      .catch((err) => {
+        console.error("Erreur ajout vue :", err);
+        delete window.__lastBreveViewTimestamp[breve.id];
+      });
+  }, [breve.id, userEmail, setNeedRefresh]);
 
   return (
     <div className={styles.modalOverlay}>
@@ -90,7 +105,6 @@ export default function BreveDetails({
             <button
               onClick={() => {
                 onPrev();
-                handleAddView();
               }}
               disabled={!hasPrev}
               title="précédent"
@@ -100,7 +114,6 @@ export default function BreveDetails({
             <button
               onClick={() => {
                 onNext();
-                handleAddView();
               }}
               disabled={!hasNext}
               title="suivant"

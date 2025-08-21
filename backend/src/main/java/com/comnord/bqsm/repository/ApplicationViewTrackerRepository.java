@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface ApplicationViewTrackerRepository extends CrudRepository<ApplicationViewTrackerEntity, Integer> {
     @Query(value = "SELECT * FROM application_view_tracker a WHERE DATE(a.date) = :date AND a.user_email = :userEmail", nativeQuery = true)
-    Optional<ApplicationViewTrackerEntity> findApplicationViewTrackerByDateAndUserEmail(@Param("date") LocalDateTime date, @Param("userEmail") String userEmail);
+    Optional<ApplicationViewTrackerEntity> findApplicationViewTrackerByDateAndUserEmail(@Param("date") java.sql.Date date, @Param("userEmail") String userEmail);
 
     @Query(value = "SELECT * FROM application_view_tracker a WHERE EXTRACT(DOW FROM a.date) = :dayOfWeek", nativeQuery = true)
     List<ApplicationViewTrackerEntity> findApplicationViewTrackerByDayOfWeek(@Param("dayOfWeek") int dayOfWeek);

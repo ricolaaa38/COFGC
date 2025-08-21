@@ -15,7 +15,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 25px 50px 50px;
+  padding: 25px 50px;
   gap: 20px;
   overflow-y: auto;
   overflow-x: hidden;

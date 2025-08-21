@@ -1059,3 +1059,69 @@ export async function userHaveAlreadyReadThisBreve(breveId, userEmail) {
     throw error;
   }
 }
+
+export async function createApplicationView(userEmail) {
+  try {
+    const response = await fetch(
+      `${OAUTH2_URL}/api/applicationviewtracker/create?userEmail=${userEmail}`,
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(
+      "Erreur lors de la création de la vue d'application :",
+      error.message
+    );
+    throw error;
+  }
+}
+
+export async function getApplicationViews() {
+  try {
+    const response = await fetch(
+      `${OAUTH2_URL}/api/applicationviewtracker/total-connection-per-days`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des vues d'application :",
+      error.message
+    );
+    throw error;
+  }
+}
+
+export async function getApplicationViewsByPeriod() {
+  try {
+    const response = await fetch(
+      `${OAUTH2_URL}/api/applicationviewtracker/connection-stats`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des vues d'application par période :",
+      error.message
+    );
+    throw error;
+  }
+}

@@ -16,10 +16,10 @@ public class FiltreDataInitializer {
     @PostConstruct
     public void initFiltres() {
         if (filtreRepository.count() == 0) {
-            filtreRepository.save(new FiltreEntity("zone", "zm_manche"));
-            filtreRepository.save(new FiltreEntity("categorie", "peche"));
-            filtreRepository.save(new FiltreEntity("intervenant", "marine"));
-            filtreRepository.save(new FiltreEntity("contributeur", "marine"));
+            filtreRepository.save(new FiltreEntity("zone", "ZM_Manche"));
+            filtreRepository.save(new FiltreEntity("categorie", "Peche"));
+            filtreRepository.save(new FiltreEntity("intervenant", "marine_nationale"));
+            filtreRepository.save(new FiltreEntity("contributeur", "marine_nationale"));
         }
     }
 }

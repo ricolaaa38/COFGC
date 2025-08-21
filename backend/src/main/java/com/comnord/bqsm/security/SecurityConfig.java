@@ -36,7 +36,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/public/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
-                                .requestMatchers("/api/commentaires/create").authenticated()
+                                .requestMatchers("/api/commentaires/create", "/api/breveviewtracker/**", "/api/applicationviewtracker/**").authenticated()
                                 .requestMatchers("/api/**").hasRole("admin")
                                 .anyRequest().authenticated()
                 )

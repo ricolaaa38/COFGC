@@ -15,7 +15,11 @@ function BreveCard({ item, onOpenDetails, onFocusOnMap }, ref) {
   useEffect(() => {
     const fetchViewTracker = async () => {
       const data = await getViewTrackerByBreveId(item.id);
-      setViewTracker(data);
+      let view = 0;
+      for (let i = 0; i < data.length; i++) {
+        view = view + data[i].viewCount;
+      }
+      setViewTracker(view);
     };
     fetchViewTracker();
   }, [item.id, needRefresh]);
@@ -59,7 +63,7 @@ function BreveCard({ item, onOpenDetails, onFocusOnMap }, ref) {
           <div>
             <p>{item.zone}</p>
             <p className={styles.breveCardViews}>
-              {viewTracker.length}
+              {viewTracker}
               <span className="material-symbols-outlined">visibility</span>
             </p>
           </div>
@@ -69,7 +73,7 @@ function BreveCard({ item, onOpenDetails, onFocusOnMap }, ref) {
         <button
           onClick={() => {
             onOpenDetails();
-            handleAddView();
+            // handleAddView();
           }}
         >
           <span className="material-symbols-outlined">visibility</span>
