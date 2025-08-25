@@ -116,6 +116,26 @@ export async function updateBreveById(id, updatedBreve) {
   }
 }
 
+export async function deleteBreveById(id) {
+  try {
+    const response = await fetch(`${OAUTH2_URL}/api/breves/delete?id=${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    if (response.ok) {
+      return await response.text();
+    } else {
+      console.error("Erreur lors de la suppression de la brève");
+    }
+  } catch (error) {
+    console.error(
+      "Erreur lors de la requête de suppression de la brève",
+      error
+    );
+    return "Erreur lors de la suppression de la brève";
+  }
+}
+
 export async function getAllBreves(page = 0, size = 10, filters = {}) {
   try {
     const queryParams = new URLSearchParams({
@@ -1108,6 +1128,28 @@ export async function getApplicationViewsByPeriod() {
   try {
     const response = await fetch(
       `${OAUTH2_URL}/api/applicationviewtracker/connection-stats`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des vues d'application par période :",
+      error.message
+    );
+    throw error;
+  }
+}
+
+export async function getApplicationViewsByWeekDayMonthYear() {
+  try {
+    const response = await fetch(
+      `${OAUTH2_URL}/api/applicationviewtracker/connection-per-dayofweek-year`,
       {
         method: "GET",
         credentials: "include",

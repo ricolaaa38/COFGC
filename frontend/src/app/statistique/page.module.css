@@ -41,3 +41,39 @@
   border-radius: 4px;
   padding: 20px;
 }
+.chartHeader {
+  width: 100%;
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.chartSelectionButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+}
+.chartSelectionButton button {
+  width: 100px;
+  height: 100%;
+  border: none;
+  border-radius: 3px;
+  background-color: grey;
+  color: white;
+}
+.chartSelectionButton button:hover {
+  background-color: darkgrey;
+  cursor: pointer;
+}
+.chartSelectionButton .active {
+  background-color: blue;
+}
+.chartSelectionButton .active:hover {
+  background-color: blue;
+  cursor: auto;
+}

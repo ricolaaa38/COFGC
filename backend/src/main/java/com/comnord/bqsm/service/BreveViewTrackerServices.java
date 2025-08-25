@@ -42,4 +42,13 @@ public class BreveViewTrackerServices {
         }
     }
 
+    public void insertFakeBreveViewTracker(BreveEntity breve, String userEmail, LocalDateTime date, int viewCount) {
+        BreveViewTrackerEntity entity = new BreveViewTrackerEntity();
+        entity.setBreveId(breve);
+        entity.setUserEmail(userEmail);
+        entity.setDate(date);
+        entity.setViewCount(viewCount);
+        breveViewTrackerRepository.save(entity);
+    }
+
 }

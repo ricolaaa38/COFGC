@@ -23,6 +23,13 @@ export default function Header() {
       "&post_logout_redirect_uri=" +
       encodeURIComponent(afterProxy);
     window.location.href = keycloakLogout;
+    try {
+      if (typeof localStorage !== "undefined") {
+        localStorage.removeItem("appViewRecorded");
+      }
+    } catch (err) {
+      console.error("Erreur lors de la suppression de localStorage :", err);
+    }
   };
 
   const closeMenu = () => {

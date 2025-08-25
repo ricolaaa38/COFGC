@@ -34,7 +34,9 @@ public class SecurityConfig {
                 .addFilterBefore(forwardedAccessTokenFilter, BearerTokenAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/public/**").permitAll()
+                                .requestMatchers("/public/**"
+//                                        , "/api/breveviewtracker/insert-fake", "/api/applicationviewtracker/insert-fake"
+                                ).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
                                 .requestMatchers("/api/commentaires/create", "/api/breveviewtracker/**", "/api/applicationviewtracker/**").authenticated()
                                 .requestMatchers("/api/**").hasRole("admin")

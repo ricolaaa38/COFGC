@@ -10,6 +10,7 @@ import {
   getCommentsByBreveId,
   getBreveAssociateIcons,
   addAViewTrackerToBreve,
+  deleteBreveById,
 } from "../lib/db";
 import { getIconByCategorie } from "../lib/iconSelector";
 import UpdateBreveSection from "./updateBreve";
@@ -36,9 +37,11 @@ export default function BreveDetails({
   const [openListCommentaires, setOpenListCommentaires] = useState(false);
   const [links, setLinks] = useState([]);
   const [associatedIcons, setAssociatedIcons] = useState([]);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     async function fetchIcons() {
+      if (isDeleting) return;
       try {
         const icons = await getBreveAssociateIcons(breve.id);
         setAssociatedIcons(icons);
@@ -60,6 +63,7 @@ export default function BreveDetails({
   }
 
   useEffect(() => {
+    if (isDeleting) return;
     if (breve?.id) {
       setPictures([]);
       setLinks([]);
@@ -78,6 +82,7 @@ export default function BreveDetails({
   if (!breve) return null;
 
   useEffect(() => {
+    if (isDeleting) return;
     if (!breve?.id) return;
     if (typeof window === "undefined") return;
 
@@ -96,6 +101,19 @@ export default function BreveDetails({
         delete window.__lastBreveViewTimestamp[breve.id];
       });
   }, [breve.id, userEmail, setNeedRefresh]);
+
+  async function deleteBreve(breveId) {
+    try {
+      setIsDeleting(true);
+      await deleteBreveById(breveId);
+      closeBreveDetails();
+      setTimeout(() => {
+        setNeedRefresh((s) => !s);
+      });
+    } catch (error) {
+      console.error("Erreur lors de la suppression de la brève :", error);
+    }
+  }
 
   return (
     <div className={styles.modalOverlay}>
@@ -139,6 +157,13 @@ export default function BreveDetails({
                 }}
               >
                 <span className="material-symbols-outlined">comment</span>
+              </button>
+              <button
+                className={styles.breveButtonDelete}
+                title="supprimer"
+                onClick={() => deleteBreve(breve.id)}
+              >
+                <span className="material-symbols-outlined">delete</span>
               </button>
             </>
           ) : (

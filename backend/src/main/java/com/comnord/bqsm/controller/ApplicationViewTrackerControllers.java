@@ -64,4 +64,16 @@ public class ApplicationViewTrackerControllers {
     public ResponseEntity<ConnectionStatsDTO> getConnectionStats() {
         return ResponseEntity.ok(applicationViewTrackerServices.getConnectionStats());
     }
+
+    @GetMapping("/connection-per-dayofweek-year")
+    public ResponseEntity<Map<String, Integer>> getConnectionPerDayOfWeekMonthAndYear() {
+        return ResponseEntity.ok(applicationViewTrackerServices.getTotalConnectionPerDayOfWeekAndYear());
+    }
+
+    @PostMapping("/insert-fake")
+    public ResponseEntity<Void> insertFake(@RequestParam String userEmail, @RequestParam String date, @RequestParam int connectionCount) {
+        LocalDateTime fakeDate = LocalDateTime.parse(date);
+        applicationViewTrackerServices.insertFakeApplicationViewTracker(userEmail, fakeDate, connectionCount);
+        return ResponseEntity.ok().build();
+    }
 }

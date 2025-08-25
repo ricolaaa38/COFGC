@@ -33,7 +33,18 @@ export default function AuthGate({ children }) {
           const data = await resp.json();
           setIsAuthenticated(true);
           setUserEmail(data.email);
-          await createApplicationView(data.email);
+          try {
+            const APP_VIEW_KEY = "appViewRecorded";
+            const appViewRecorded =
+              typeof window !== "undefined" &&
+              localStorage.getItem(APP_VIEW_KEY);
+            if (!appViewRecorded) {
+              await createApplicationView(data.email);
+              localStorage.setItem(APP_VIEW_KEY, "1");
+            }
+          } catch (err) {
+            console.error("Erreur createApplicationView :", err);
+          }
 
           if (data.roles && data.roles.length > 0) {
             setUserRole(data.roles[0]);

@@ -3,12 +3,18 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
 import styles from "./page.module.css";
-import { useEffect, useState } from "react";
-import { getApplicationViews, getApplicationViewsByPeriod } from "../lib/db";
+import { useEffect, useState, useMemo } from "react";
+import {
+  getApplicationViews,
+  getApplicationViewsByPeriod,
+  getApplicationViewsByWeekDayMonthYear,
+} from "../lib/db";
 import {
   ResponsiveContainer,
   LineChart,
   Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   Tooltip,
@@ -19,14 +25,19 @@ import {
 
 export default function Statistiques() {
   const [dataForChart, setDataForChart] = useState([]);
+  const [periodFirstChart, setPeriodFirstChart] = useState("perDay");
+  const [periodSecondChart, setPeriodSecondChart] = useState("perMonth");
+  const [dataForWeekDayMonthYear, setDataForWeekDayMonthYear] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getApplicationViews();
         const dataPeriod = await getApplicationViewsByPeriod();
+        const dataWeekDayMonthYear =
+          await getApplicationViewsByWeekDayMonthYear();
         setDataForChart(dataPeriod);
-        console.log("Data for chart:", dataPeriod);
+        setDataForWeekDayMonthYear(dataWeekDayMonthYear);
       } catch (error) {
         console.error("Error fetching application views:", error);
       }
@@ -78,15 +89,6 @@ export default function Statistiques() {
     return filtered.sort((a, b) =>
       String(a.date).localeCompare(String(b.date))
     );
-  };
-
-  const formattedAll = (year) => {
-    return {
-      perDay: formattedData("perDay", year),
-      perWeek: formattedData("perWeek", year),
-      perMonth: formattedData("perMonth", year),
-      perYear: formattedData("perYear", year),
-    };
   };
 
   const getLabelForPeriod = (dateStr, period = "perDay") => {
@@ -177,11 +179,106 @@ export default function Statistiques() {
           .filter((y) => Number.isFinite(y))
       )
     );
-    return years.sort((a, b) => b - a);
+    return years.sort((a, b) => a - b);
   })();
 
-  const comparisonData = buildYearComparison("perDay", availableYears);
-  console.log("Comparison Data:", comparisonData);
+  const comparisonDataFirstChart = useMemo(
+    () => buildYearComparison(periodFirstChart, availableYears),
+    [periodFirstChart, availableYears, dataForChart]
+  );
+  const comparisonDataSecondChart = useMemo(
+    () => buildYearComparison(periodSecondChart, availableYears),
+    [periodSecondChart, availableYears, dataForChart]
+  );
+
+  const brushRangeFirst = useMemo(() => {
+    const len = comparisonDataFirstChart.length || 0;
+    const lastN = 30;
+    const startIndex = Math.max(0, len - lastN);
+    const endIndex = Math.max(0, len - 1);
+    return { startIndex, endIndex };
+  }, [comparisonDataFirstChart]);
+
+  const handleFirstChartPeriodChange = (newPeriod) => {
+    setPeriodFirstChart(newPeriod);
+  };
+  const handleSecondChartPeriodChange = (newPeriod) => {
+    setPeriodSecondChart(newPeriod);
+  };
+
+  const transformWeekDayMonthYear = (obj) => {
+    if (!obj) return [];
+    const dayNames = {
+      1: "lundi",
+      2: "mardi",
+      3: "mercredi",
+      4: "jeudi",
+      5: "vendredi",
+      6: "samedi",
+      7: "dimanche",
+    };
+
+    const map = {};
+
+    Object.entries(obj).forEach(([key, value]) => {
+      const parts = String(key).split("-");
+      if (parts.length !== 2) return;
+      const [yearStr, dowStr] = parts;
+      const year = Number(yearStr);
+      if (Number.isNaN(year)) return;
+      const dayKey = dayNames[dowStr] || `d${dowStr}`;
+
+      if (!map[year]) {
+        map[year] = {
+          année: year,
+          week: {
+            lundi: 0,
+            mardi: 0,
+            mercredi: 0,
+            jeudi: 0,
+            vendredi: 0,
+            samedi: 0,
+            dimanche: 0,
+          },
+        };
+      }
+
+      map[year].week[dayKey] = value;
+    });
+
+    return Object.values(map).sort((a, b) => a.année - b.année);
+  };
+
+  const weekDataByYear = useMemo(
+    () => transformWeekDayMonthYear(dataForWeekDayMonthYear),
+    [dataForWeekDayMonthYear]
+  );
+
+  const dayOrder = [
+    "lundi",
+    "mardi",
+    "mercredi",
+    "jeudi",
+    "vendredi",
+    "samedi",
+    "dimanche",
+  ];
+  const cap = (s) =>
+    typeof s === "string" ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+
+  const chartDataDays = useMemo(() => {
+    const yearMap = new Map(
+      (weekDataByYear || []).map((w) => [w.année, w.week || {}])
+    );
+    return dayOrder.map((day) => {
+      const row = { day: cap(day) };
+      (availableYears || []).forEach((year) => {
+        const week = yearMap.get(year) || {};
+        row[`y${year}`] = week[day] ?? 0;
+      });
+      return row;
+    });
+  }, [weekDataByYear, availableYears]);
 
   return (
     <div id={styles.statistiquesPage}>
@@ -190,8 +287,27 @@ export default function Statistiques() {
         <h2>Statistiques</h2>
         <div className={styles.statistiquesCharts}>
           <div className={styles.statistiquesChart}>
+            <div className={styles.chartHeader}>
+              <h3>Nombre total de connexions :</h3>
+              <div className={styles.chartSelectionButton}>
+                <button
+                  onClick={() => handleFirstChartPeriodChange("perDay")}
+                  className={periodFirstChart === "perDay" ? styles.active : ""}
+                >
+                  Journalier
+                </button>
+                <button
+                  onClick={() => handleFirstChartPeriodChange("perWeek")}
+                  className={
+                    periodFirstChart === "perWeek" ? styles.active : ""
+                  }
+                >
+                  Hebdomadaire
+                </button>
+              </div>
+            </div>
             <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={buildYearComparison("perDay", availableYears)}>
+              <LineChart data={comparisonDataFirstChart}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="label" />
                 <YAxis />
@@ -217,13 +333,37 @@ export default function Statistiques() {
                     />
                   );
                 })}
-                <Brush />
+                <Brush
+                  startIndex={brushRangeFirst.startIndex}
+                  endIndex={brushRangeFirst.endIndex}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
           <div className={styles.statistiquesChart}>
+            <div className={styles.chartHeader}>
+              <h3>Nombre total de connexions :</h3>
+              <div className={styles.chartSelectionButton}>
+                <button
+                  onClick={() => handleSecondChartPeriodChange("perMonth")}
+                  className={
+                    periodSecondChart === "perMonth" ? styles.active : ""
+                  }
+                >
+                  Mensuel
+                </button>
+                <button
+                  onClick={() => handleSecondChartPeriodChange("perYear")}
+                  className={
+                    periodSecondChart === "perYear" ? styles.active : ""
+                  }
+                >
+                  Annuel
+                </button>
+              </div>
+            </div>
             <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={buildYearComparison("perWeek", availableYears)}>
+              <BarChart data={comparisonDataSecondChart}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="label" />
                 <YAxis />
@@ -237,84 +377,58 @@ export default function Statistiques() {
                     "#413ea0",
                   ];
                   return (
-                    <Line
+                    <Bar
                       key={year}
-                      type="monotone"
                       dataKey={`y${year}`}
                       name={`${year}`}
-                      stroke={colorPalette[i % colorPalette.length]}
-                      activeDot={{ r: 6 }}
-                      strokeWidth={2}
-                      dot={false}
+                      fill={colorPalette[i % colorPalette.length]}
+                      barSize={20}
                     />
                   );
                 })}
                 <Brush />
-              </LineChart>
+              </BarChart>
             </ResponsiveContainer>
           </div>
           <div className={styles.statistiquesChart}>
+            <div className={styles.chartHeader}>
+              <h3>
+                Nombre total de connexions en fonctions du jour de la semaine
+                par années:
+              </h3>
+            </div>
             <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={buildYearComparison("perMonth", availableYears)}>
+              <BarChart
+                // layout="vertical"
+                data={chartDataDays}
+                margin={{ left: 20, right: 20 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="label" />
-                <YAxis />
+                <YAxis type="number" />
+                <XAxis dataKey="day" type="category" width={140} />
                 <Tooltip />
                 <Legend />
-                {availableYears.map((year, i) => {
+                {(availableYears || []).map((year, i) => {
                   const colorPalette = [
                     "#8884d8",
                     "#82ca9d",
                     "#ff7300",
                     "#413ea0",
+                    "#a8328e",
+                    "#4caf50",
+                    "#ffbb28",
                   ];
                   return (
-                    <Line
+                    <Bar
                       key={year}
-                      type="monotone"
                       dataKey={`y${year}`}
                       name={`${year}`}
-                      stroke={colorPalette[i % colorPalette.length]}
-                      activeDot={{ r: 6 }}
-                      strokeWidth={2}
-                      dot={false}
+                      fill={colorPalette[i % colorPalette.length]}
+                      barSize={12}
                     />
                   );
                 })}
-                <Brush />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-          <div className={styles.statistiquesChart}>
-            <ResponsiveContainer width="100%" height={400}>
-              {/* <LineChart data={buildYearComparison("perYear", availableYears)}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="label" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                {availableYears.map((year, i) => {
-                  const colorPalette = [
-                    "#8884d8",
-                    "#82ca9d",
-                    "#ff7300",
-                    "#413ea0",
-                  ];
-                  return (
-                    <Line
-                      key={year}
-                      type="monotone"
-                      dataKey={`y${year}`}
-                      name={`${year}`}
-                      stroke={colorPalette[i % colorPalette.length]}
-                      activeDot={{ r: 6 }}
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  );
-                })}
-                <Brush />
-              </LineChart> */}
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>

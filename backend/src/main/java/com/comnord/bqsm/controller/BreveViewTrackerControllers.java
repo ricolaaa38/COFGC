@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,5 +65,18 @@ public class BreveViewTrackerControllers {
             BreveViewTrackerEntity saved = breveViewTrackerRepository.save(entity);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         }
+    }
+
+    @PostMapping("/insert-fake")
+    public ResponseEntity<Void> insertFake(
+            @RequestParam int breveId,
+            @RequestParam String userEmail,
+            @RequestParam String date, // format "yyyy-MM-ddTHH:mm:ss"
+            @RequestParam int viewCount
+    ) {
+        BreveEntity breve = breveServices.getBreveById(breveId);
+        LocalDateTime fakeDate = LocalDateTime.parse(date);
+        breveViewTrackerServices.insertFakeBreveViewTracker(breve, userEmail, fakeDate, viewCount);
+        return ResponseEntity.ok().build();
     }
 }

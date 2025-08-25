@@ -3,6 +3,8 @@ package com.comnord.bqsm.service;
 import com.comnord.bqsm.exception.ApplicationViewTrackerNotFound;
 import com.comnord.bqsm.exception.ServiceException;
 import com.comnord.bqsm.model.ApplicationViewTrackerEntity;
+import com.comnord.bqsm.model.BreveEntity;
+import com.comnord.bqsm.model.BreveViewTrackerEntity;
 import com.comnord.bqsm.model.dto.ConnectionStatsDTO;
 import com.comnord.bqsm.repository.ApplicationViewTrackerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +84,26 @@ public class ApplicationViewTrackerServices {
         dto.perMonth = new ArrayList<>(perMonth.entrySet());
         dto.perYear = new ArrayList<>(perYear.entrySet());
         return dto;
+    }
+
+    public Map<String, Integer> getTotalConnectionPerDayOfWeekAndYear() {
+        Iterable<ApplicationViewTrackerEntity> entries = applicationViewTrackerRepository.findAll();
+        Map<String, Integer> result = new HashMap<>();
+        for (ApplicationViewTrackerEntity entry : entries) {
+            LocalDate date = entry.getDate().toLocalDate();
+            int year = date.getYear();
+            int dayOfWeek = date.getDayOfWeek().getValue(); // 1 = lundi, 7 = dimanche
+            String key = year + "-" + dayOfWeek;
+            result.put(key, result.getOrDefault(key, 0) + entry.getConnectionCount());
+        }
+        return result;
+    }
+
+    public void insertFakeApplicationViewTracker(String userEmail, LocalDateTime date, int connectionCount) {
+        ApplicationViewTrackerEntity entity = new ApplicationViewTrackerEntity();
+        entity.setUserEmail(userEmail);
+        entity.setDate(date);
+        entity.setConnectionCount(connectionCount);
+        applicationViewTrackerRepository.save(entity);
     }
 }
