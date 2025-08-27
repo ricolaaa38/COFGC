@@ -69,6 +69,8 @@ services:
     image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
     volumes:
       - ./oauth2-proxy.cfg:/etc/oauth2-proxy.cfg
+    environment:
+      - PASS_REFRESH_TOKEN=true
     command: ["--config", "/etc/oauth2-proxy.cfg"]
     depends_on:
       - bqsm-backend

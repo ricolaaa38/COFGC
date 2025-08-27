@@ -22,10 +22,11 @@ export default function BreveMarkers({ map, onMarkerClick, focusedBreve }) {
   const { activeFilters } = useData();
   const [coords, setCoords] = useState([]);
   const vectorLayerRef = useRef();
+  const { needRefresh } = useData();
 
   useEffect(() => {
     getAllBreveCoords(activeFilters).then(setCoords);
-  }, [activeFilters]);
+  }, [activeFilters, needRefresh]);
 
   // Cursor: pointer :
   useEffect(() => {
@@ -103,7 +104,9 @@ export default function BreveMarkers({ map, onMarkerClick, focusedBreve }) {
 
     // Styles des clusters et markeurs :
     const markerStyle = (feature) => {
-      const size = feature.get("features").length;
+      // protection : feature.get("features") n'existe que pour les clusters
+      const clusterFeatures = feature && feature.get && feature.get("features");
+      const size = Array.isArray(clusterFeatures) ? clusterFeatures.length : 1;
       if (size > 1) {
         return new Style({
           image: new CircleStyle({
@@ -137,21 +140,32 @@ export default function BreveMarkers({ map, onMarkerClick, focusedBreve }) {
 
     // Gestion du click sur la carte :
     const handleMapClick = (evt) => {
-      map.forEachFeatureAtPixel(evt.pixel, (feature) => {
-        const clusterFeatures = feature.get("features");
-        if (clusterFeatures.length === 1) {
-          const id = clusterFeatures[0].get("id");
-          if (id && typeof onMarkerClick === "function") {
-            onMarkerClick(id);
-            console.log(id);
+      map.forEachFeatureAtPixel(
+        evt.pixel,
+        (feature, layer) => {
+          // ne traiter que la couche de markers (évite les polygones/other layers)
+          if (!layer || layer.get("name") !== "breveMarkers") return;
+
+          const clusterFeatures = feature.get("features");
+          if (Array.isArray(clusterFeatures)) {
+            if (clusterFeatures.length === 1) {
+              const id = clusterFeatures[0].get("id");
+              if (id && typeof onMarkerClick === "function") onMarkerClick(id);
+            } else if (clusterFeatures.length > 1) {
+              const view = map.getView();
+              const zoom = view.getZoom();
+              view.animate({ zoom: zoom + 2, duration: 300 });
+            }
+          } else {
+            // feature non clusterisée (par ex. source directe) => tenter de lire l'id
+            const id = feature.get("id") || feature.get("name");
+            if (id && typeof onMarkerClick === "function") onMarkerClick(id);
           }
-        } else if (clusterFeatures.length > 1) {
-          // Zoom au click sur les clusters :
-          const view = map.getView();
-          const zoom = view.getZoom();
-          view.animate({ zoom: zoom + 2, duration: 300 });
-        }
-      });
+          // arrêter l'itération dès qu'on a trouvé une feature pertinente
+          return true;
+        },
+        { hitTolerance: 5 }
+      );
     };
 
     map.on("singleclick", handleMapClick);
@@ -163,7 +177,7 @@ export default function BreveMarkers({ map, onMarkerClick, focusedBreve }) {
         vectorLayerRef.current = null;
       }
     };
-  }, [map, coords, onMarkerClick, focusedBreve]);
+  }, [map, coords, onMarkerClick, focusedBreve, needRefresh]);
 
   return null;
 }

@@ -193,10 +193,14 @@ export default function Statistiques() {
 
   const brushRangeFirst = useMemo(() => {
     const len = comparisonDataFirstChart.length || 0;
+    if (len === 0) return { startIndex: undefined, endIndex: undefined };
     const lastN = 30;
     const startIndex = Math.max(0, len - lastN);
     const endIndex = Math.max(0, len - 1);
-    return { startIndex, endIndex };
+    return {
+      startIndex: Number.isFinite(startIndex) ? startIndex : 0,
+      endIndex: Number.isFinite(endIndex) ? endIndex : len - 1,
+    };
   }, [comparisonDataFirstChart]);
 
   const handleFirstChartPeriodChange = (newPeriod) => {
@@ -306,7 +310,7 @@ export default function Statistiques() {
                 </button>
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height="85%">
               <LineChart data={comparisonDataFirstChart}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="label" />
@@ -334,8 +338,9 @@ export default function Statistiques() {
                   );
                 })}
                 <Brush
-                  startIndex={brushRangeFirst.startIndex}
-                  endIndex={brushRangeFirst.endIndex}
+                  // startIndex={brushRangeFirst.startIndex}
+                  // endIndex={brushRangeFirst.endIndex}
+                  height={20}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -362,7 +367,7 @@ export default function Statistiques() {
                 </button>
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height="85%">
               <BarChart data={comparisonDataSecondChart}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="label" />
@@ -386,7 +391,7 @@ export default function Statistiques() {
                     />
                   );
                 })}
-                <Brush />
+                <Brush height={20} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -397,7 +402,7 @@ export default function Statistiques() {
                 par années:
               </h3>
             </div>
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height="85%">
               <BarChart
                 // layout="vertical"
                 data={chartDataDays}

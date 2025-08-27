@@ -1167,3 +1167,66 @@ export async function getApplicationViewsByWeekDayMonthYear() {
     throw error;
   }
 }
+
+export async function createZoneMaritime(zoneDto) {
+  try {
+    const response = await fetch(`${OAUTH2_URL}/api/zones-maritime/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(zoneDto),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(
+      "Erreur lors de la création de la zone maritime :",
+      error.message
+    );
+    throw error;
+  }
+}
+
+export async function getAllZones() {
+  try {
+    const response = await fetch(`${OAUTH2_URL}/api/zones-maritime/`, {
+      method: "GET",
+      credentials: "include",
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Erreur lors de la récupération des zones :", error.message);
+    throw error;
+  }
+}
+
+export async function deleteZoneMaritime(id) {
+  try {
+    const response = await fetch(
+      `${OAUTH2_URL}/api/zones-maritime/delete?id=${id}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    return await response.text();
+  } catch (error) {
+    console.error(
+      "Erreur lors de la suppression de la zone maritime :",
+      error.message
+    );
+    throw error;
+  }
+}

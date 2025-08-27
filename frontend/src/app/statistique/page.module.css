@@ -24,6 +24,10 @@
   text-align: center;
   background-color: white;
   border-radius: 3px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .statistiquesCharts {
@@ -31,7 +35,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 .statistiquesChart {
   width: 100%;
@@ -40,6 +44,7 @@
   border: 1px solid #eee;
   border-radius: 4px;
   padding: 20px;
+  box-sizing: border-box;
 }
 .chartHeader {
   width: 100%;

@@ -19,6 +19,7 @@ import OverviewMap from "ol/control/OverviewMap";
 import MousePosition from "ol/control/MousePosition";
 import { toLonLat, fromLonLat } from "ol/proj";
 import BrevesGestionButtons from "../components/brevesGestionButton";
+import ZonesLayer from "./zonesLayer";
 
 export default function Carte() {
   const mapRef = useRef(null);
@@ -246,6 +247,7 @@ export default function Carte() {
             focusedBreve={focusedBreve}
           />
         )}
+        {map && <ZonesLayer map={map} />}
         <div className={styles.breveSectionContainer}>
           <BreveSection
             selectedBreveId={selectedBreveId}
