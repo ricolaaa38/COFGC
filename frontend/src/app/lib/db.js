@@ -1,4 +1,32 @@
 const OAUTH2_URL = process.env.NEXT_PUBLIC_OAUTH2_URL;
+// const FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
+
+// function handleAuthFailure() {
+//   if (typeof window === "undefined") return;
+//   const currentUrl = window.location.href || FRONT_URL;
+//   window.location.href = `${encodeURIComponent(currentUrl)}`;
+// }
+
+// export async function apiFetch(input, init = {}) {
+//   const merged = {
+//     credentials: "include",
+//     ...init,
+//   };
+//   const resp = await fetch(input, merged);
+
+//   if (
+//     resp.status === 401 ||
+//     resp.status === 403 ||
+//     resp.status === 302 ||
+//     resp.redirected
+//   ) {
+//     handleAuthFailure();
+//     // throw pour que les callers sachent que l'appel a échoué
+//     throw new Error("Unauthorized");
+//   }
+
+//   return resp;
+// }
 
 export async function getFiltres() {
   try {
