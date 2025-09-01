@@ -1,38 +1,51 @@
 const OAUTH2_URL = process.env.NEXT_PUBLIC_OAUTH2_URL;
-// const FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
-// function handleAuthFailure() {
-//   if (typeof window === "undefined") return;
-//   const currentUrl = window.location.href || FRONT_URL;
-//   window.location.href = `${encodeURIComponent(currentUrl)}`;
-// }
+class AuthRedirectError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "AuthRedirectError";
+  }
+}
 
-// export async function apiFetch(input, init = {}) {
-//   const merged = {
-//     credentials: "include",
-//     ...init,
-//   };
-//   const resp = await fetch(input, merged);
+function handleAuthFailure() {
+  if (typeof window === "undefined") return;
+  window._authRedirecting = true;
+  const currentFullUrl = window.location.href;
+  window.location.href = `${OAUTH2_URL}/oauth2/start?rd=${encodeURIComponent(
+    currentFullUrl
+  )}`;
+}
 
-//   if (
-//     resp.status === 401 ||
-//     resp.status === 403 ||
-//     resp.status === 302 ||
-//     resp.redirected
-//   ) {
-//     handleAuthFailure();
-//     // throw pour que les callers sachent que l'appel a échoué
-//     throw new Error("Unauthorized");
-//   }
+function isAuthRedirecting(err) {
+  if (typeof window !== "undefined" && window._authRedirecting) return true;
+  return err && err.name === "AuthRedirectError";
+}
 
-//   return resp;
-// }
+export async function apiFetch(input, init = {}) {
+  const merged = {
+    credentials: "include",
+    ...init,
+  };
+  const resp = await fetch(input, merged);
+
+  if (
+    resp.status === 401 ||
+    resp.status === 403 ||
+    resp.status === 302 ||
+    resp.redirected
+  ) {
+    handleAuthFailure();
+    console.log("Redirection to auth server");
+    throw new AuthRedirectError();
+  }
+
+  return resp;
+}
 
 export async function getFiltres() {
   try {
-    const response = await fetch(`${OAUTH2_URL}/api/filtres/`, {
+    const response = await apiFetch(`${OAUTH2_URL}/api/filtres/`, {
       method: "GET",
-      credentials: "include",
     });
     if (response.ok) {
       return await response.json();
@@ -40,6 +53,7 @@ export async function getFiltres() {
       console.error("Erreur lors de la récuperation des filtres");
     }
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la requête des filtres", error);
     return [];
   }
@@ -104,9 +118,7 @@ export async function deleteFiltres(id) {
 
 export async function getBreveById(id) {
   try {
-    const response = await fetch(`${OAUTH2_URL}/api/breves/id?id=${id}`, {
-      credentials: "include",
-    });
+    const response = await apiFetch(`${OAUTH2_URL}/api/breves/id?id=${id}`);
     if (response.ok) {
       return await response.json();
     } else if (response.status === 404) {
@@ -116,6 +128,7 @@ export async function getBreveById(id) {
       return [];
     }
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la requête de la brève", error);
     return [];
   }
@@ -175,11 +188,10 @@ export async function getAllBreves(page = 0, size = 10, filters = {}) {
         )
       ),
     });
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/breves/filtered?${queryParams.toString()}`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (response.ok) {
@@ -188,6 +200,7 @@ export async function getAllBreves(page = 0, size = 10, filters = {}) {
       console.error("Erreur lors de la récuperation des brèves");
     }
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la requête des brèves", error);
   }
 }
@@ -199,11 +212,10 @@ export async function getFilteredBrevesForExport(filters = {}) {
         ([_, value]) => value !== undefined && value !== null
       )
     );
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/breves/export?${queryParams.toString()}`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (response.ok) {
@@ -212,6 +224,7 @@ export async function getFilteredBrevesForExport(filters = {}) {
       console.error("Erreur lors de la récupération des brèves pour export");
     }
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la requête des brèves pour export", error);
   }
 }
@@ -223,17 +236,15 @@ export async function getAllBreveCoords(filters = {}) {
         ([_, value]) => value !== undefined && value !== null
       )
     );
-    const response = await fetch(
-      `${OAUTH2_URL}/api/breves/all-coords?${queryParams.toString()}`,
-      {
-        credentials: "include",
-      }
+    const response = await apiFetch(
+      `${OAUTH2_URL}/api/breves/all-coords?${queryParams.toString()}`
     );
     if (response.ok) {
       return await response.json();
     }
     return [];
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la requete des coordonnées des brèves",
       error
@@ -243,9 +254,8 @@ export async function getAllBreveCoords(filters = {}) {
 
 export async function getBreves() {
   try {
-    const response = await fetch(`${OAUTH2_URL}/api/breves/`, {
+    const response = await apiFetch(`${OAUTH2_URL}/api/breves/`, {
       method: "GET",
-      credentials: "include",
     });
     if (response.ok) {
       return await response.json();
@@ -253,17 +263,15 @@ export async function getBreves() {
       console.error("Erreur lors de la récuperation des brèves");
     }
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la requête des brèves", error);
   }
 }
 
 export async function getPicturesByBreveId(breveId) {
   try {
-    const response = await fetch(
-      `${OAUTH2_URL}/api/pictures/?breveId=${breveId}`,
-      {
-        credentials: "include",
-      }
+    const response = await apiFetch(
+      `${OAUTH2_URL}/api/pictures/?breveId=${breveId}`
     );
     if (response.ok) {
       return await response.json();
@@ -274,6 +282,7 @@ export async function getPicturesByBreveId(breveId) {
       return [];
     }
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la requête des images", error);
     return [];
   }
@@ -322,11 +331,8 @@ export async function deletePicture(id) {
 
 export async function getIntervenantsByBreveId(breveId) {
   try {
-    const response = await fetch(
-      `${OAUTH2_URL}/api/intervenants/?breveId=${breveId}`,
-      {
-        credentials: "include",
-      }
+    const response = await apiFetch(
+      `${OAUTH2_URL}/api/intervenants/?breveId=${breveId}`
     );
     if (response.ok) {
       return await response.json();
@@ -337,6 +343,7 @@ export async function getIntervenantsByBreveId(breveId) {
       return [];
     }
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la requête", error);
     return [];
   }
@@ -389,11 +396,8 @@ export async function deleteIntervenant(id) {
 
 export async function getContributeursByBreveId(breveId) {
   try {
-    const response = await fetch(
-      `${OAUTH2_URL}/api/contributeurs/?breveId=${breveId}`,
-      {
-        credentials: "include",
-      }
+    const response = await apiFetch(
+      `${OAUTH2_URL}/api/contributeurs/?breveId=${breveId}`
     );
     if (response.ok) {
       return await response.json();
@@ -404,6 +408,7 @@ export async function getContributeursByBreveId(breveId) {
       return [];
     }
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la requête", error);
     return [];
   }
@@ -631,11 +636,10 @@ export async function deleteFile(id) {
 
 export async function getFolderChildren(parentId) {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/arborescence/child?parentId=${parentId}`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (!response.ok) {
@@ -645,6 +649,7 @@ export async function getFolderChildren(parentId) {
     const data = await response.json();
     return data;
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération des enfants :",
       error.message
@@ -655,9 +660,8 @@ export async function getFolderChildren(parentId) {
 
 export async function getAllFolders() {
   try {
-    const response = await fetch(`${OAUTH2_URL}/api/arborescence/dossiers`, {
+    const response = await apiFetch(`${OAUTH2_URL}/api/arborescence/dossiers`, {
       method: "GET",
-      credentials: "include",
     });
     if (!response.ok) {
       const errorText = await response.text();
@@ -666,6 +670,7 @@ export async function getAllFolders() {
     const data = await response.json();
     return data;
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération des enfants :",
       error.message
@@ -676,9 +681,8 @@ export async function getAllFolders() {
 
 export async function getAllFiles() {
   try {
-    const response = await fetch(`${OAUTH2_URL}/api/arborescence/files`, {
+    const response = await apiFetch(`${OAUTH2_URL}/api/arborescence/files`, {
       method: "GET",
-      credentials: "include",
     });
     if (!response.ok) {
       const errorText = await response.text();
@@ -687,6 +691,7 @@ export async function getAllFiles() {
     const data = await response.json();
     return data;
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération des enfants :",
       error.message
@@ -697,10 +702,12 @@ export async function getAllFiles() {
 
 export async function getAllFilesMeta() {
   try {
-    const response = await fetch(`${OAUTH2_URL}/api/arborescence/files-meta`, {
-      method: "GET",
-      credentials: "include",
-    });
+    const response = await apiFetch(
+      `${OAUTH2_URL}/api/arborescence/files-meta`,
+      {
+        method: "GET",
+      }
+    );
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(errorText);
@@ -708,6 +715,7 @@ export async function getAllFilesMeta() {
     const data = await response.json();
     return data;
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération des métadonnées des fichiers :",
       error.message
@@ -718,11 +726,10 @@ export async function getAllFilesMeta() {
 
 export async function getOneFile(fileId) {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/arborescence/get-file/${fileId}`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (!response.ok) {
@@ -732,6 +739,7 @@ export async function getOneFile(fileId) {
     const blob = await response.blob();
     return blob;
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération des enfants :",
       error.message
@@ -742,11 +750,10 @@ export async function getOneFile(fileId) {
 
 export async function getAllLinksByBreveId(breveId) {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/links/?breveId=${breveId}`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (!response.ok) {
@@ -756,6 +763,7 @@ export async function getAllLinksByBreveId(breveId) {
     const data = await response.json();
     return data;
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la récupération des liens :", error.message);
     throw error;
   }
@@ -806,11 +814,8 @@ export async function deleteLink(id) {
 }
 
 export async function getFileMeta(fileId) {
-  const response = await fetch(
-    `${OAUTH2_URL}/api/arborescence/file-meta/${fileId}`,
-    {
-      credentials: "include",
-    }
+  const response = await apiFetch(
+    `${OAUTH2_URL}/api/arborescence/file-meta/${fileId}`
   );
   if (!response.ok) {
     throw new Error(await response.text());
@@ -819,11 +824,8 @@ export async function getFileMeta(fileId) {
 }
 
 export async function getFolderMeta(folderId) {
-  const response = await fetch(
-    `${OAUTH2_URL}/api/arborescence/folder-meta/${folderId}`,
-    {
-      credentials: "include",
-    }
+  const response = await apiFetch(
+    `${OAUTH2_URL}/api/arborescence/folder-meta/${folderId}`
   );
   if (!response.ok) {
     throw new Error(await response.text());
@@ -833,17 +835,15 @@ export async function getFolderMeta(folderId) {
 
 export async function getCommentsByBreveId(breveId) {
   try {
-    const response = await fetch(
-      `${OAUTH2_URL}/api/commentaires/?breveId=${breveId}`,
-      {
-        credentials: "include",
-      }
+    const response = await apiFetch(
+      `${OAUTH2_URL}/api/commentaires/?breveId=${breveId}`
     );
     if (!response.ok) {
       throw new Error(await response.text());
     }
     return await response.json();
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération des commentaires :",
       error.message
@@ -904,15 +904,15 @@ export async function deleteComment(id) {
 
 export async function getAllIcons() {
   try {
-    const response = await fetch(`${OAUTH2_URL}/api/icons/`, {
+    const response = await apiFetch(`${OAUTH2_URL}/api/icons/`, {
       method: "GET",
-      credentials: "include",
     });
     if (!response.ok) {
       throw new Error(await response.text());
     }
     return await response.json();
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la récupération des icônes :", error.message);
     throw error;
   }
@@ -920,15 +920,18 @@ export async function getAllIcons() {
 
 export async function getIconById(id) {
   try {
-    const response = await fetch(`${OAUTH2_URL}/api/icons/get-one?id=${id}`, {
-      method: "GET",
-      credentials: "include",
-    });
+    const response = await apiFetch(
+      `${OAUTH2_URL}/api/icons/get-one?id=${id}`,
+      {
+        method: "GET",
+      }
+    );
     if (!response.ok) {
       throw new Error(await response.text());
     }
     return await response.json();
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la récupération de l'icône :", error.message);
     throw error;
   }
@@ -972,11 +975,10 @@ export async function deleteIcon(id) {
 
 export async function getBreveAssociateIcons(breveId) {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/icons-by-breve/list?breveId=${breveId}`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (!response.ok) {
@@ -984,6 +986,7 @@ export async function getBreveAssociateIcons(breveId) {
     }
     return await response.json();
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération des icônes associées :",
       error.message
@@ -1047,11 +1050,10 @@ export async function deleteBreveIconAssociation(id) {
 
 export async function getViewTrackerByBreveId(breveId) {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/breveviewtracker/?breveId=${breveId}`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (!response.ok) {
@@ -1059,6 +1061,7 @@ export async function getViewTrackerByBreveId(breveId) {
     }
     return await response.json();
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération du view tracker :",
       error.message
@@ -1088,11 +1091,10 @@ export async function addAViewTrackerToBreve(breveId, userEmail) {
 
 export async function userHaveAlreadyReadThisBreve(breveId, userEmail) {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/breveviewtracker/hasViewed?breveId=${breveId}&userEmail=${userEmail}`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (!response.ok) {
@@ -1100,6 +1102,7 @@ export async function userHaveAlreadyReadThisBreve(breveId, userEmail) {
     }
     return await response.json();
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la vérification de la lecture de la brève :",
       error.message
@@ -1132,11 +1135,10 @@ export async function createApplicationView(userEmail) {
 
 export async function getApplicationViews() {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/applicationviewtracker/total-connection-per-days`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (!response.ok) {
@@ -1144,6 +1146,7 @@ export async function getApplicationViews() {
     }
     return await response.json();
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération des vues d'application :",
       error.message
@@ -1154,11 +1157,10 @@ export async function getApplicationViews() {
 
 export async function getApplicationViewsByPeriod() {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/applicationviewtracker/connection-stats`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (!response.ok) {
@@ -1166,6 +1168,7 @@ export async function getApplicationViewsByPeriod() {
     }
     return await response.json();
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération des vues d'application par période :",
       error.message
@@ -1176,11 +1179,10 @@ export async function getApplicationViewsByPeriod() {
 
 export async function getApplicationViewsByWeekDayMonthYear() {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${OAUTH2_URL}/api/applicationviewtracker/connection-per-dayofweek-year`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
     if (!response.ok) {
@@ -1188,6 +1190,7 @@ export async function getApplicationViewsByWeekDayMonthYear() {
     }
     return await response.json();
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error(
       "Erreur lors de la récupération des vues d'application par période :",
       error.message
@@ -1222,15 +1225,15 @@ export async function createZoneMaritime(zoneDto) {
 
 export async function getAllZones() {
   try {
-    const response = await fetch(`${OAUTH2_URL}/api/zones-maritime/`, {
+    const response = await apiFetch(`${OAUTH2_URL}/api/zones-maritime/`, {
       method: "GET",
-      credentials: "include",
     });
     if (!response.ok) {
       throw new Error(await response.text());
     }
     return await response.json();
   } catch (error) {
+    if (isAuthRedirecting(error)) return;
     console.error("Erreur lors de la récupération des zones :", error.message);
     throw error;
   }

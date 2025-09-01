@@ -1,0 +1,57 @@
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 3px;
+  padding: 5px;
+  width: 250px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 40px;
+}
+
+.popupHeader {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.popupHeader button {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border: none;
+  background-color: transparent;
+}
+.popupHeader button:hover span {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.confirmedButton {
+  border: none;
+  width: 50%;
+  height: 25%;
+  border-radius: 3px;
+  background-color: black;
+  color: white;
+}
+.confirmedButton:hover {
+  cursor: pointer;
+  background-color: red;
+}

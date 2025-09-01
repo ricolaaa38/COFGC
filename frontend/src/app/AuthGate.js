@@ -74,13 +74,15 @@ export default function AuthGate({ children }) {
   }, [setUserRole]);
 
   if (checking) {
-    return <div>Authentification en cours...</div>;
+    return (
+      <div className="redirecting-message">Authentification en cours...</div>
+    );
   }
 
   if (!isAuthenticated) {
     return (
       <div className="redirecting-message">
-        Redirection vers l’authentification…
+        Redirection vers l'authentification…
       </div>
     );
   }

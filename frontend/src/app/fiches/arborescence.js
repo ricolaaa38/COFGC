@@ -202,7 +202,6 @@ export default function Arborescence({ setSelectedFileForViewing }) {
       }
     }
 
-    // --- suite existante : mise à jour optimiste + appel API
     const oldKey = normalizeKey(oldParentId);
     const newKey = normalizeKey(overFolderId);
     setExpandedFolders((prev) => {

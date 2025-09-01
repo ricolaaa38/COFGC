@@ -10,13 +10,14 @@ import {
   getCommentsByBreveId,
   getBreveAssociateIcons,
   addAViewTrackerToBreve,
-  deleteBreveById,
+  getAllIcons,
 } from "../lib/db";
 import { getIconByCategorie } from "../lib/iconSelector";
 import UpdateBreveSection from "./updateBreve";
 import styles from "./breveDetails.module.css";
 import BreveAddCommentaires from "./breveAddCommentaires";
 import BreveListCommentaires from "./breveListCommentaires";
+import ConfirmDeleteBrevePopup from "./popupDeleteBreve";
 
 export default function BreveDetails({
   breve,
@@ -38,6 +39,8 @@ export default function BreveDetails({
   const [links, setLinks] = useState([]);
   const [associatedIcons, setAssociatedIcons] = useState([]);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [openPopupDeleteBreve, setOpenPopupDeleteBreve] = useState(false);
+  const [iconBase64, setIconBase64] = useState(null);
 
   useEffect(() => {
     async function fetchIcons() {
@@ -79,6 +82,24 @@ export default function BreveDetails({
     }
   }, [breve, needRefresh]);
 
+  useEffect(() => {
+    const fetchIcon = async () => {
+      try {
+        const icons = await getAllIcons();
+        const found = icons.find(
+          (icon) =>
+            icon.iconName &&
+            icon.iconName.toLowerCase() === breve.categorie?.toLowerCase()
+        );
+        if (found) setIconBase64(found.base64 || found.icon);
+        else setIconBase64(null);
+      } catch (error) {
+        console.error("Error fetching icons:", error);
+      }
+    };
+    fetchIcon();
+  }, [breve.categorie, needRefresh]);
+
   if (!breve) return null;
 
   useEffect(() => {
@@ -101,19 +122,6 @@ export default function BreveDetails({
         delete window.__lastBreveViewTimestamp[breve.id];
       });
   }, [breve.id, userEmail, setNeedRefresh]);
-
-  async function deleteBreve(breveId) {
-    try {
-      setIsDeleting(true);
-      await deleteBreveById(breveId);
-      closeBreveDetails();
-      setTimeout(() => {
-        setNeedRefresh((s) => !s);
-      });
-    } catch (error) {
-      console.error("Erreur lors de la suppression de la brève :", error);
-    }
-  }
 
   return (
     <div className={styles.modalOverlay}>
@@ -161,7 +169,7 @@ export default function BreveDetails({
               <button
                 className={styles.breveButtonDelete}
                 title="supprimer"
-                onClick={() => deleteBreve(breve.id)}
+                onClick={() => setOpenPopupDeleteBreve((prev) => !prev)}
               >
                 <span className="material-symbols-outlined">delete</span>
               </button>
@@ -184,9 +192,14 @@ export default function BreveDetails({
         </div>
         <div className={styles.breveCardHeader}>
           <div className={styles.breveIcon}>
-            <span className="material-symbols-outlined">
-              {getIconByCategorie(breve.categorie)}
-            </span>
+            {iconBase64 ? (
+              <img
+                src={`data:image/png;base64,${iconBase64}`}
+                alt={breve.categorie}
+              />
+            ) : (
+              <span className="material-symbols-outlined">category</span>
+            )}
           </div>
           <div className={styles.breveInfo}>
             <div>
@@ -199,16 +212,18 @@ export default function BreveDetails({
             </p>
             <p>{breve.zone}</p>
           </div>
-          <button
-            className={styles.breveComments}
-            onClick={() => {
-              setOpenListCommentaires(!openListCommentaires);
-              setOpenCommentaireSection(false);
-            }}
-          >
-            {commentaires.length}
-            <span className="material-symbols-outlined">comment</span>
-          </button>
+          {userRole === "admin" && (
+            <button
+              className={styles.breveComments}
+              onClick={() => {
+                setOpenListCommentaires(!openListCommentaires);
+                setOpenCommentaireSection(false);
+              }}
+            >
+              {commentaires.length}
+              <span className="material-symbols-outlined">comment</span>
+            </button>
+          )}
         </div>
         <div className={styles.breveCarroussel}>
           {pictures.length > 0 ? (
@@ -364,6 +379,14 @@ export default function BreveDetails({
         <BreveListCommentaires
           setOpenListCommentaires={setOpenListCommentaires}
           commentaires={commentaires}
+        />
+      )}
+      {openPopupDeleteBreve && (
+        <ConfirmDeleteBrevePopup
+          breveId={breve.id}
+          closeBreveDetails={closeBreveDetails}
+          setIsDeleting={setIsDeleting}
+          setOpenPopupDeleteBreve={setOpenPopupDeleteBreve}
         />
       )}
     </div>

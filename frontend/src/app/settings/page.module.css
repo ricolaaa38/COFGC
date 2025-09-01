@@ -211,6 +211,8 @@
   height: 100%;
   object-fit: cover;
   border-radius: 3px;
+  color: white;
+  background-color: white;
 }
 .iconsList .newIconForm {
   box-sizing: border-box;

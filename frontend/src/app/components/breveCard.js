@@ -5,6 +5,7 @@ import {
   getViewTrackerByBreveId,
   addAViewTrackerToBreve,
   userHaveAlreadyReadThisBreve,
+  getAllIcons,
 } from "../lib/db";
 import { useData } from "../context/DataContext";
 
@@ -12,6 +13,8 @@ function BreveCard({ item, onOpenDetails, onFocusOnMap }, ref) {
   const [viewTracker, setViewTracker] = useState(0);
   const [hasUserRead, setHasUserRead] = useState(false);
   const { userEmail, needRefresh, setNeedRefresh } = useData();
+  const [iconBase64, setIconBase64] = useState(null);
+
   useEffect(() => {
     const fetchViewTracker = async () => {
       const data = await getViewTrackerByBreveId(item.id);
@@ -37,6 +40,24 @@ function BreveCard({ item, onOpenDetails, onFocusOnMap }, ref) {
     checkUserReadStatus();
   }, [item.id, needRefresh]);
 
+  useEffect(() => {
+    const fetchIcon = async () => {
+      try {
+        const icons = await getAllIcons();
+        const found = icons.find(
+          (icon) =>
+            icon.iconName &&
+            icon.iconName.toLowerCase() === item.categorie?.toLowerCase()
+        );
+        if (found) setIconBase64(found.base64 || found.icon);
+        else setIconBase64(null);
+      } catch (error) {
+        console.error("Error fetching icons:", error);
+      }
+    };
+    fetchIcon();
+  }, [item.categorie, needRefresh]);
+
   return (
     <section
       className={
@@ -47,9 +68,14 @@ function BreveCard({ item, onOpenDetails, onFocusOnMap }, ref) {
     >
       <div className={styles.breveCardBody}>
         <div className={styles.breveIcon}>
-          <span className="material-symbols-outlined">
-            {getIconByCategorie(item.categorie)}
-          </span>
+          {iconBase64 ? (
+            <img
+              src={`data:image/png;base64,${iconBase64}`}
+              alt={item.categorie}
+            />
+          ) : (
+            <span className="material-symbols-outlined">category</span>
+          )}
         </div>
         <div ref={ref} className={styles.breveInfo}>
           <div>
