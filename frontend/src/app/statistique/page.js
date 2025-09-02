@@ -311,10 +311,13 @@ export default function Statistiques() {
               </div>
             </div>
             <ResponsiveContainer width="100%" height="85%">
-              <LineChart data={comparisonDataFirstChart}>
+              <LineChart
+                data={comparisonDataFirstChart}
+                margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="label" />
-                <YAxis />
+                <YAxis width={40} />
                 <Tooltip />
                 <Legend />
                 {availableYears.map((year, i) => {
@@ -368,12 +371,15 @@ export default function Statistiques() {
               </div>
             </div>
             <ResponsiveContainer width="100%" height="85%">
-              <BarChart data={comparisonDataSecondChart}>
+              <BarChart
+                data={comparisonDataSecondChart}
+                margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="label" />
-                <YAxis />
+                <YAxis width={40} />
                 <Tooltip />
-                <Legend />
+                <Legend margin={{ bottom: 5 }} />
                 {availableYears.map((year, i) => {
                   const colorPalette = [
                     "#8884d8",
@@ -391,7 +397,7 @@ export default function Statistiques() {
                     />
                   );
                 })}
-                <Brush height={20} />
+                <Brush height={20} margin={{ bottom: 5 }} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -406,10 +412,10 @@ export default function Statistiques() {
               <BarChart
                 // layout="vertical"
                 data={chartDataDays}
-                margin={{ left: 20, right: 20 }}
+                margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <YAxis type="number" />
+                <YAxis type="number" width={40} />
                 <XAxis dataKey="day" type="category" width={140} />
                 <Tooltip />
                 <Legend />

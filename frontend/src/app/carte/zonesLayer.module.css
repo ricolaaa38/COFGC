@@ -142,3 +142,9 @@
   z-index: 1000;
   background-color: rgba(255, 255, 255, 0.3);
 }
+
+@media (max-width: 992px) {
+  .openToolbarMenuBtn {
+    display: none;
+  }
+}

@@ -68,11 +68,11 @@ export default function BreveDetails({
   useEffect(() => {
     if (isDeleting) return;
     if (breve?.id) {
-      setPictures([]);
-      setLinks([]);
-      setIntervenants([]);
-      setContributeurs([]);
-      setCommentaires([]);
+      // setPictures([]);
+      // setLinks([]);
+      // setIntervenants([]);
+      // setContributeurs([]);
+      // setCommentaires([]);
       getIntervenantsByBreveId(breve.id).then(setIntervenants);
       getContributeursByBreveId(breve.id).then(setContributeurs);
       getPicturesByBreveId(breve.id).then(setPictures);

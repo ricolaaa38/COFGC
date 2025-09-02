@@ -23,6 +23,13 @@ export default function BreveMarkers({ map, onMarkerClick, focusedBreve }) {
   const [coords, setCoords] = useState([]);
   const vectorLayerRef = useRef();
   const { needRefresh } = useData();
+  const prevFocusedIdRef = useRef(null);
+
+  useEffect(() => {
+    if (!focusedBreve) {
+      prevFocusedIdRef.current = null;
+    }
+  }, [focusedBreve]);
 
   useEffect(() => {
     getAllBreveCoords(activeFilters).then(setCoords);
@@ -46,7 +53,9 @@ export default function BreveMarkers({ map, onMarkerClick, focusedBreve }) {
 
   // Affichage des marqueurs/clusters et gestion du focus :
   useEffect(() => {
-    if (!map || coords.length === 0) return;
+    if (!map || coords.length === 0) {
+      return;
+    }
 
     // Nettoyage des anciennes couches :
     map
@@ -62,6 +71,7 @@ export default function BreveMarkers({ map, onMarkerClick, focusedBreve }) {
     // Gestion du focus sur une brève spécifique :
     let filteredCoords = coords;
     if (focusedBreve) {
+      // Toujours filter pour n'afficher que la brève ciblée
       filteredCoords = [
         {
           id: focusedBreve.id,
@@ -71,11 +81,21 @@ export default function BreveMarkers({ map, onMarkerClick, focusedBreve }) {
         },
       ];
 
-      const lon = parseFloat(focusedBreve.longitude);
-      const lat = parseFloat(focusedBreve.latitude);
-      if (!isNaN(lon) && !isNaN(lat)) {
-        const center = fromLonLat([lon, lat]);
-        map.getView().animate({ center, zoom: 9, duration: 500 });
+      // N'animer que si l'id change (évite les ré-animations multiples)
+      const id = focusedBreve.id;
+      if (prevFocusedIdRef.current !== id) {
+        prevFocusedIdRef.current = id;
+        const lon = parseFloat(focusedBreve.longitude);
+        const lat = parseFloat(focusedBreve.latitude);
+        if (!isNaN(lon) && !isNaN(lat)) {
+          const view = map.getView();
+          // annuler toute animation en cours avant d'en lancer une nouvelle
+          if (typeof view.cancelAnimations === "function") {
+            view.cancelAnimations();
+          }
+          const center = fromLonLat([lon, lat]);
+          view.animate({ center, zoom: 9, duration: 500 });
+        }
       }
     }
 

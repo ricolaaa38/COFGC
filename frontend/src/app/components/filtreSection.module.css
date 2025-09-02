@@ -34,7 +34,7 @@
   align-items: center; /* centre horizontal */
   height: 100%;
   width: 16%;
-  background-color: rgb(110, 110, 110);
+  background-color: rgb(130, 130, 130);
   color: white;
   gap: 5px;
   text-align: center;
@@ -48,7 +48,7 @@
 .dateFilter:hover,
 .dateFilter:hover label {
   cursor: pointer;
-  background-color: rgb(130, 130, 130);
+  background-color: rgb(150, 150, 150);
 }
 
 .labelFilter input,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { addNewBrevesFromFile } from "../lib/db";
 import styles from "./brevesGestionButton.module.css";
 import { useData } from "../context/DataContext";
@@ -12,7 +12,28 @@ export default function BrevesGestionButtons() {
   const [isOpen, setIsOpen] = useState(false);
   const [isValidFile, setIsValidFile] = useState(false);
   const fileInputRef = useRef(null);
+  const uploadSectionRef = useRef(null);
+  const importButtonRef = useRef(null);
   const { brevesForExport, userRole, setNeedRefresh } = useData();
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e) => {
+      const target = e.target;
+      if (
+        (uploadSectionRef.current &&
+          uploadSectionRef.current.contains(target)) ||
+        (importButtonRef.current && importButtonRef.current.contains(target))
+      ) {
+        return;
+      }
+      setIsOpen(false);
+    };
+    document.addEventListener("pointerdown", handleClickOutside);
+    return () => {
+      document.removeEventListener("pointerdown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -71,6 +92,7 @@ export default function BrevesGestionButtons() {
       {userRole === "admin" && (
         <button
           className={styles.importButton}
+          ref={importButtonRef}
           onClick={() => setIsOpen(!isOpen)}
         >
           <p>IMPORTER</p>
@@ -91,7 +113,7 @@ export default function BrevesGestionButtons() {
         </button>
       )}
       {isOpen && (
-        <div className={styles.uploadSection}>
+        <div className={styles.uploadSection} ref={uploadSectionRef}>
           <label htmlFor="file">Sélectionnez une brève :</label>
           <input
             id="file"
